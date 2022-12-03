@@ -1,0 +1,11 @@
+@import "constants.scss";
+@import "header.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  background-color: var(--primary-background);
+}
