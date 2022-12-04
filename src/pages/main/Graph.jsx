@@ -1,8 +1,7 @@
-import React from "react";
-import {ApplicationService} from "../services/ApplicationService.js";
-import {fetchAttempts} from "../redux/attempts/actions.js";
+import React, {useEffect} from "react";
+import {ApplicationService} from "../../services/ApplicationService.js";
 import {connect} from "react-redux";
-import {Buttons} from "./form/Buttons.jsx";
+import {fetchAddAttempt, fetchAttemptsWithOffset} from "../../redux/attempts/actions.js";
 
 function getCssColor(name) {
     return window
@@ -10,15 +9,18 @@ function getCssColor(name) {
         .getPropertyValue(name);
 }
 
-function Graph() {
-
-
+function Graph({attempts, r, addAttempt, fetchAttemptsWithOffset}) {
     const canvasRef = React.useRef(null);
-    React.useEffect(() => {
+    useEffect(() => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
-        drawCanvasGraph(canvas, ctx, [{x: 1, y: 0, r: 1}], 1);
-    }, []);
+        drawCanvasGraph(canvas, ctx, attempts, r, addAttempt);
+
+    });
+
+    useEffect(() => {
+        fetchAttemptsWithOffset(-10, 10);
+    },[]);
 
     return (
         <canvas id="graph" width="400" height="400" ref={canvasRef}/>
@@ -34,7 +36,7 @@ function Graph() {
  * @param dotsList
  * @param userSelectedR
  */
-function drawCanvasGraph(canvas, ctx, dotsList, userSelectedR) {
+function drawCanvasGraph(canvas, ctx, dotsList, userSelectedR, addAttempt) {
     /* Init graph parameters */
     const markLen = 20
     const arrowDifference = 20
@@ -78,11 +80,11 @@ function drawCanvasGraph(canvas, ctx, dotsList, userSelectedR) {
             const rElement = dotsList[i].r;
             const x = convertXToCanvasCoordinate(xElement * userSelectedR / rElement, rElement, rValue * userSelectedR / rElement);
             const y = convertYToCanvasCoordinate(yElement * userSelectedR / rElement, rElement, rValue * userSelectedR / rElement);
-            // if (hitList[i]) {
+            if (dotsList[i].result) {
                 ctx.fillStyle = hitDotColor
-            // } else {
-            //     ctx.fillStyle = missDotColor
-            // }
+            } else {
+                ctx.fillStyle = missDotColor
+            }
             ctx.beginPath();
             ctx.arc(x, y, 3, 0, Math.PI * 2);
             ctx.fill();
@@ -224,7 +226,7 @@ function drawCanvasGraph(canvas, ctx, dotsList, userSelectedR) {
         ctx.beginPath();
         ctx.moveTo(width / 2, height / 2);
         ctx.lineTo(width / 2 + rValue / 2, height / 2);
-        ctx.lineTo(width / 2, height / 2 + rValue / 2);
+        ctx.lineTo(width / 2, height / 2 + rValue);
         ctx.fill();
     }
 
@@ -234,8 +236,8 @@ function drawCanvasGraph(canvas, ctx, dotsList, userSelectedR) {
             width / 2,
             height / 2,
             rValue,
-            -Math.PI / 2,
-            0,
+            Math.PI / 2,
+            Math.PI,
             false
         );
         ctx.lineTo(width / 2, height / 2);
@@ -247,8 +249,8 @@ function drawCanvasGraph(canvas, ctx, dotsList, userSelectedR) {
         ctx.fillRect(
             width / 2,
             height / 2,
-            -rValue,
-            -rValue / 2
+            -rValue / 2,
+            -rValue
         );
         ctx.fill();
     }
@@ -331,21 +333,25 @@ function drawCanvasGraph(canvas, ctx, dotsList, userSelectedR) {
 
     canvas.onmousedown = function (event) {
 
-        const x = convertXToRadiusOf(event.offsetX, rValue);
-        const y = convertYToRadiusOf(event.offsetY, rValue);
+        const x = convertXToRadiusOf(event.offsetX, userSelectedR);
+        const y = convertYToRadiusOf(event.offsetY, userSelectedR);
 
-        ApplicationService.addAttempt({x, y, r: userSelectedR});
-
+        addAttempt({x: x, y: y, r: userSelectedR});
     };
 }
 
 function mapDispatchToGraphProps(dispatch) {
     return {
-        fetchAttempts: () => {
-            console.log("fetching attempts from graph"); // TODO: remove log
-            dispatch(fetchAttempts())
-        }
+        addAttempt: (attempt) => dispatch(fetchAddAttempt(attempt)),
+        fetchAttemptsWithOffset: (offset, limit) => dispatch(fetchAttemptsWithOffset(offset, limit)),
     }
 }
 
-export default connect(null, mapDispatchToGraphProps)(Graph);
+function mapStateToGraphProps(state) {
+    return {
+        attempts: state.attemptsList,
+        r: state.currentEnteredR
+    }
+}
+
+export default connect(mapStateToGraphProps, mapDispatchToGraphProps)(Graph);

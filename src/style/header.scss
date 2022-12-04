@@ -5,9 +5,28 @@
   padding-left: 50px;
   padding-top: 10px;
   padding-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .header__text {
   color: var(--primary-text);
   font-size: 2rem;
 }
+
+.header__refs-cont {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+
+}
+
+.header__ref {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+

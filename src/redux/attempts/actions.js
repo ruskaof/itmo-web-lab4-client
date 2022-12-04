@@ -1,42 +1,42 @@
 import {ApplicationService} from "../../services/ApplicationService.js";
 
-export const FETCH_ATTEMPTS_REQUEST = 'FETCH_ATTEMPTS_REQUEST';
-export const FETCH_ATTEMPTS_SUCCESS = 'FETCH_ATTEMPTS_SUCCESS';
-export const FETCH_ATTEMPTS_FAILURE = 'FETCH_ATTEMPTS_FAILURE';
-
-export const fetchAttempts = () => {
-    return function (dispatch) {
-        dispatch(fetchAttemptsRequest());
-        ApplicationService.getAllAttempts()
-            .then(data => {
-                dispatch(fetchAttemptsSuccess(data));
-            })
-            .catch(error => {
-                    dispatch(fetchAttemptsFailure(error.message));
-                }
-            )
-    }
-}
-
-const fetchAttemptsRequest = () => {
-    return {
-        type: FETCH_ATTEMPTS_REQUEST,
-    }
-}
-
-const fetchAttemptsSuccess = attemptsList => {
-    return {
-        type: FETCH_ATTEMPTS_SUCCESS,
-        payload: attemptsList,
-    }
-}
-
-const fetchAttemptsFailure = errorMessage => {
-    return {
-        type: FETCH_ATTEMPTS_FAILURE,
-        payload: errorMessage,
-    }
-}
+// export const FETCH_ATTEMPTS_REQUEST = 'FETCH_ATTEMPTS_REQUEST';
+// export const FETCH_ATTEMPTS_SUCCESS = 'FETCH_ATTEMPTS_SUCCESS';
+// export const FETCH_ATTEMPTS_FAILURE = 'FETCH_ATTEMPTS_FAILURE';
+//
+// export const fetchAttempts = () => {
+//     return function (dispatch) {
+//         dispatch(fetchAttemptsRequest());
+//         ApplicationService.getAllAttempts()
+//             .then(data => {
+//                 dispatch(fetchAttemptsSuccess(data));
+//             })
+//             .catch(error => {
+//                     dispatch(fetchAttemptsFailure(error.message));
+//                 }
+//             )
+//     }
+// }
+//
+// const fetchAttemptsRequest = () => {
+//     return {
+//         type: FETCH_ATTEMPTS_REQUEST,
+//     }
+// }
+//
+// const fetchAttemptsSuccess = attemptsList => {
+//     return {
+//         type: FETCH_ATTEMPTS_SUCCESS,
+//         payload: attemptsList,
+//     }
+// }
+//
+// const fetchAttemptsFailure = errorMessage => {
+//     return {
+//         type: FETCH_ATTEMPTS_FAILURE,
+//         payload: errorMessage,
+//     }
+// }
 
 export const FETCH_ADD_ATTEMPT_REQUEST = 'FETCH_ADD_ATTEMPT_REQUEST';
 export const FETCH_ADD_ATTEMPT_SUCCESS = 'FETCH_ADD_ATTEMPT_SUCCESS';
@@ -46,11 +46,8 @@ export const fetchAddAttempt = (attempt) => {
     return function (dispatch) {
         dispatch(fetchAddAttemptRequest());
         ApplicationService.addAttempt(attempt)
-            .then(() => {
-                return ApplicationService.getAllAttempts();
-            })
-            .then(data => {
-                dispatch(fetchAddAttemptSuccess(data));
+            .then((newAttempt) => {
+                dispatch(fetchAddAttemptSuccess(newAttempt));
             })
             .catch(error => {
                 dispatch(fetchAddAttemptFailure(error.message));
@@ -87,10 +84,7 @@ export const fetchDeleteAllAttempts = () => {
         dispatch(fetchDeleteAllAttemptsRequest());
         ApplicationService.removeAllAttempts()
             .then(() => {
-                return ApplicationService.getAllAttempts();
-            })
-            .then(data => {
-                dispatch(fetchDeleteAllAttemptsSuccess(data));
+                dispatch(fetchDeleteAllAttemptsSuccess());
             })
             .catch(error => {
                 dispatch(fetchDeleteAllAttemptsFailure(error.message));
@@ -104,10 +98,9 @@ const fetchDeleteAllAttemptsRequest = () => {
     }
 }
 
-const fetchDeleteAllAttemptsSuccess = attemptsList => {
+const fetchDeleteAllAttemptsSuccess = () => {
     return {
         type: FETCH_DELETE_ALL_ATTEMPTS_SUCCESS,
-        payload: attemptsList,
     }
 }
 
@@ -152,6 +145,88 @@ const fetchAttemptsWithOffsetSuccess = data => {
 const fetchAttemptsWithOffsetFailure = errorMessage => {
     return {
         type: FETCH_ATTEMPTS_WITH_OFFSET_FAILURE,
+        payload: errorMessage,
+    }
+}
+
+export const SET_SCROLL_START = 'SET_SCROLL_START';
+
+export const setScrollStart = (scrollStart) => {
+    return {
+        type: SET_SCROLL_START,
+        payload: scrollStart,
+    }
+}
+
+export const SET_X = 'SET_X';
+
+export const setX = (x) => {
+    return {
+        type: SET_X,
+        payload: x,
+    }
+}
+
+export const SET_Y = 'SET_Y';
+
+export const setY = (y) => {
+    return {
+        type: SET_Y,
+        payload: y,
+    }
+}
+
+export const SET_R = 'SET_R';
+
+export const setR = (r) => {
+    return {
+        type: SET_R,
+        payload: r,
+    }
+}
+
+export const SET_FORM_ERROR = 'SET_FORM_ERROR';
+
+export const setFormError = (message) => {
+return {
+        type: SET_FORM_ERROR,
+        payload: message,
+    }
+}
+
+export const GET_ROWS_COUNT_REQUEST = 'GET_ROWS_COUNT_REQUEST';
+export const GET_ROWS_COUNT_SUCCESS = 'GET_ROWS_COUNT_SUCCESS';
+export const GET_ROWS_COUNT_FAILURE = 'GET_ROWS_COUNT_FAILURE';
+
+export const getRowsCount = () => {
+    return function (dispatch) {
+        dispatch(getRowsCountRequest());
+        ApplicationService.getRowsCount()
+            .then(count => {
+                dispatch(getRowsCountSuccess(count));
+            })
+            .catch(error => {
+                dispatch(getRowsCountFailure(error.message));
+            })
+    }
+}
+
+const getRowsCountRequest = () => {
+    return {
+        type: GET_ROWS_COUNT_REQUEST,
+    }
+}
+
+const getRowsCountSuccess = count => {
+    return {
+        type: GET_ROWS_COUNT_SUCCESS,
+        payload: count,
+    }
+}
+
+const getRowsCountFailure = errorMessage => {
+    return {
+        type: GET_ROWS_COUNT_FAILURE,
         payload: errorMessage,
     }
 }
