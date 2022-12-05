@@ -1,0 +1,26 @@
+@import "constants.scss";
+
+.datagrid {
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr 2fr 1fr 4fr 1fr;
+    justify-items: left;
+    align-items: center;
+    grid-column-gap: 10px;
+}
+
+.attempt-status {
+    border-radius: 5px;
+    padding: 7px 10px;
+    text-align: center;
+}
+
+.datagrid__cell-hit {
+    @extend .attempt-status;
+    background-color: var(--hit-dot-color);
+
+}
+
+.datagrid__cell-miss {
+    @extend .attempt-status;
+    background-color: var(--miss-dot-color);
+}

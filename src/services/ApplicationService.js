@@ -25,14 +25,14 @@ export const ApplicationService = {
     //         .then(response => response.json())
     // },
     removeAllAttempts: async function () {
-        //await sleep(1000); // TODO: remove it
+        await sleep(1000); // TODO: remove it
         console.log('ApplicationService.removeAllAttempts');
         return fetch(`${BASE_URL}/delete_all`, {
             method: 'DELETE',
         })
     },
     getAttemptsWithOffset: async function (offset, count) {
-        //await sleep(1000); // TODO: remove it
+        await sleep(1000); // TODO: remove it
         console.log('ApplicationService.getAttemptsWithOffset', offset, count);
         return fetch(`${BASE_URL}/get_with_offset?offset=${offset}&size=${count}`, {
             method: 'GET',
