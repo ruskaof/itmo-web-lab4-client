@@ -230,3 +230,60 @@ const getRowsCountFailure = errorMessage => {
         payload: errorMessage,
     }
 }
+
+/* Login page actions */
+
+export const SET_LOGIN_FORM_USERNAME = 'SET_LOGIN_FORM_USERNAME';
+export const SET_LOGIN_FORM_PASSWORD = 'SET_LOGIN_FORM_PASSWORD';
+
+export const setLoginFormUsername = (username) => {
+    return {
+        type: SET_LOGIN_FORM_USERNAME,
+        payload: username,
+    }
+}
+
+export const setLoginFormPassword = (password) => {
+    return {
+        type: SET_LOGIN_FORM_PASSWORD,
+        payload: password,
+    }
+}
+
+export const FETCH_LOGIN_REQUEST = 'FETCH_LOGIN_REQUEST';
+export const FETCH_LOGIN_SUCCESS = 'FETCH_LOGIN_SUCCESS';
+export const FETCH_LOGIN_FAILURE = 'FETCH_LOGIN_FAILURE';
+
+export const fetchLogin = (username, password) => {
+    console.log("fetchLogin with username: " + username + " and password: " + password);
+    return function (dispatch) {
+        dispatch(fetchLoginRequest());
+        ApplicationService.login(username, password)
+            .then(() => {
+                console.log("Login success");
+                dispatch(fetchLoginSuccess());
+            })
+            .catch(error => {
+                dispatch(fetchLoginFailure(error.message));
+            })
+    }
+}
+
+const fetchLoginRequest = () => {
+    return {
+        type: FETCH_LOGIN_REQUEST,
+    }
+}
+
+const fetchLoginSuccess = () => {
+    return {
+        type: FETCH_LOGIN_SUCCESS,
+    }
+}
+
+const fetchLoginFailure = errorMessage => {
+    return {
+        type: FETCH_LOGIN_FAILURE,
+        payload: errorMessage,
+    }
+}

@@ -20,13 +20,12 @@ function Graph({attempts, r, addAttempt, fetchAttemptsWithOffset}) {
 
     useEffect(() => {
         fetchAttemptsWithOffset(-10, 10);
-    },[]);
+    }, []);
 
-    return (
-        <canvas id="graph" width="400" height="400" ref={canvasRef}/>
-    )
+    return (<div className="gradient-animation-box">
+        <canvas id="graph" width="390" height="390" ref={canvasRef} className="gradient-animation-box__graph"/>
+    </div>)
 }
-
 
 
 /**
@@ -98,61 +97,21 @@ function drawCanvasGraph(canvas, ctx, dotsList, userSelectedR, addAttempt) {
 
         ctx.fillStyle = labelsColor;
 
-        ctx.fillText(
-            "R/2",
-            width / 2 + rValue / 2,
-            height / 2 - markLen - markLen / 2
-        );
-        ctx.moveTo(
-            width / 2 + rValue / 2,
-            height / 2 + markLen
-        );
-        ctx.lineTo(
-            width / 2 + rValue / 2,
-            height / 2 - markLen
-        );
+        ctx.fillText("R/2", width / 2 + rValue / 2, height / 2 - markLen - markLen / 2);
+        ctx.moveTo(width / 2 + rValue / 2, height / 2 + markLen);
+        ctx.lineTo(width / 2 + rValue / 2, height / 2 - markLen);
 
-        ctx.fillText(
-            "-R/2",
-            width / 2 - rValue / 2,
-            height / 2 - markLen - markLen / 2
-        );
-        ctx.moveTo(
-            width / 2 - rValue / 2,
-            height / 2 + markLen
-        );
-        ctx.lineTo(
-            width / 2 - rValue / 2,
-            height / 2 - markLen
-        );
+        ctx.fillText("-R/2", width / 2 - rValue / 2, height / 2 - markLen - markLen / 2);
+        ctx.moveTo(width / 2 - rValue / 2, height / 2 + markLen);
+        ctx.lineTo(width / 2 - rValue / 2, height / 2 - markLen);
 
-        ctx.fillText(
-            "R",
-            width / 2 + rValue,
-            height / 2 - markLen - markLen / 2
-        );
-        ctx.moveTo(
-            width / 2 + rValue,
-            height / 2 + markLen
-        );
-        ctx.lineTo(
-            width / 2 + rValue,
-            height / 2 - markLen
-        );
+        ctx.fillText("R", width / 2 + rValue, height / 2 - markLen - markLen / 2);
+        ctx.moveTo(width / 2 + rValue, height / 2 + markLen);
+        ctx.lineTo(width / 2 + rValue, height / 2 - markLen);
 
-        ctx.fillText(
-            "-R",
-            width / 2 - rValue,
-            height / 2 - markLen - markLen / 2
-        );
-        ctx.moveTo(
-            width / 2 - rValue,
-            height / 2 + markLen
-        );
-        ctx.lineTo(
-            width / 2 - rValue,
-            height / 2 - markLen
-        );
+        ctx.fillText("-R", width / 2 - rValue, height / 2 - markLen - markLen / 2);
+        ctx.moveTo(width / 2 - rValue, height / 2 + markLen);
+        ctx.lineTo(width / 2 - rValue, height / 2 - markLen);
 
         ctx.stroke();
     }
@@ -163,61 +122,21 @@ function drawCanvasGraph(canvas, ctx, dotsList, userSelectedR, addAttempt) {
 
         ctx.fillStyle = labelsColor;
 
-        ctx.fillText(
-            "-R/2",
-            width / 2 + markLen + markLen / 2,
-            height / 2 + rValue / 2
-        );
-        ctx.moveTo(
-            width / 2 + markLen,
-            height / 2 + rValue / 2
-        );
-        ctx.lineTo(
-            width / 2 - markLen,
-            height / 2 + rValue / 2
-        );
+        ctx.fillText("-R/2", width / 2 + markLen + markLen / 2, height / 2 + rValue / 2);
+        ctx.moveTo(width / 2 + markLen, height / 2 + rValue / 2);
+        ctx.lineTo(width / 2 - markLen, height / 2 + rValue / 2);
 
-        ctx.fillText(
-            "R/2",
-            width / 2 + markLen + markLen / 2,
-            height / 2 - rValue / 2
-        );
-        ctx.moveTo(
-            width / 2 + markLen,
-            height / 2 - rValue / 2
-        );
-        ctx.lineTo(
-            width / 2 - markLen,
-            height / 2 - rValue / 2
-        );
+        ctx.fillText("R/2", width / 2 + markLen + markLen / 2, height / 2 - rValue / 2);
+        ctx.moveTo(width / 2 + markLen, height / 2 - rValue / 2);
+        ctx.lineTo(width / 2 - markLen, height / 2 - rValue / 2);
 
-        ctx.fillText(
-            "-R",
-            width / 2 + markLen + markLen / 2,
-            height / 2 + rValue
-        );
-        ctx.moveTo(
-            width / 2 + markLen,
-            height / 2 + rValue
-        );
-        ctx.lineTo(
-            width / 2 - markLen,
-            height / 2 + rValue
-        );
+        ctx.fillText("-R", width / 2 + markLen + markLen / 2, height / 2 + rValue);
+        ctx.moveTo(width / 2 + markLen, height / 2 + rValue);
+        ctx.lineTo(width / 2 - markLen, height / 2 + rValue);
 
-        ctx.fillText(
-            "R",
-            width / 2 + markLen + markLen / 2,
-            height / 2 - rValue
-        );
-        ctx.moveTo(
-            width / 2 + markLen,
-            height / 2 - rValue
-        );
-        ctx.lineTo(
-            width / 2 - markLen,
-            height / 2 - rValue
-        );
+        ctx.fillText("R", width / 2 + markLen + markLen / 2, height / 2 - rValue);
+        ctx.moveTo(width / 2 + markLen, height / 2 - rValue);
+        ctx.lineTo(width / 2 - markLen, height / 2 - rValue);
 
         ctx.stroke();
     }
@@ -232,26 +151,14 @@ function drawCanvasGraph(canvas, ctx, dotsList, userSelectedR, addAttempt) {
 
     function drawSector() {
         ctx.beginPath();
-        ctx.arc(
-            width / 2,
-            height / 2,
-            rValue,
-            Math.PI / 2,
-            Math.PI,
-            false
-        );
+        ctx.arc(width / 2, height / 2, rValue, Math.PI / 2, Math.PI, false);
         ctx.lineTo(width / 2, height / 2);
         ctx.fill();
     }
 
     function drawRectangle() {
         ctx.beginPath();
-        ctx.fillRect(
-            width / 2,
-            height / 2,
-            -rValue / 2,
-            -rValue
-        );
+        ctx.fillRect(width / 2, height / 2, -rValue / 2, -rValue);
         ctx.fill();
     }
 
@@ -267,15 +174,9 @@ function drawCanvasGraph(canvas, ctx, dotsList, userSelectedR, addAttempt) {
         ctx.beginPath();
         ctx.moveTo(0, height / 2);
         ctx.lineTo(width, height / 2);
-        ctx.lineTo(
-            width - arrowDifference,
-            height / 2 - arrowDifference
-        );
+        ctx.lineTo(width - arrowDifference, height / 2 - arrowDifference);
         ctx.moveTo(width, height / 2);
-        ctx.lineTo(
-            width - arrowDifference,
-            height / 2 + arrowDifference
-        );
+        ctx.lineTo(width - arrowDifference, height / 2 + arrowDifference);
         ctx.stroke();
     }
 
@@ -284,15 +185,9 @@ function drawCanvasGraph(canvas, ctx, dotsList, userSelectedR, addAttempt) {
         ctx.beginPath();
         ctx.moveTo(width / 2, height);
         ctx.lineTo(width / 2, 0);
-        ctx.lineTo(
-            width / 2 - arrowDifference,
-            arrowDifference
-        );
+        ctx.lineTo(width / 2 - arrowDifference, arrowDifference);
         ctx.moveTo(width / 2, 0);
-        ctx.lineTo(
-            width / 2 + arrowDifference,
-            arrowDifference
-        );
+        ctx.lineTo(width / 2 + arrowDifference, arrowDifference);
         ctx.stroke();
     }
 
@@ -349,8 +244,7 @@ function mapDispatchToGraphProps(dispatch) {
 
 function mapStateToGraphProps(state) {
     return {
-        attempts: state.attemptsList,
-        r: state.currentEnteredR
+        attempts: state.attemptsList, r: state.currentEnteredR
     }
 }
 

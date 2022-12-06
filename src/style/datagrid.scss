@@ -24,3 +24,7 @@
     @extend .attempt-status;
     background-color: var(--miss-dot-color);
 }
+
+.table {
+    border: 1px solid var(--primary-text);
+}

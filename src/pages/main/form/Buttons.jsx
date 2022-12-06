@@ -2,7 +2,6 @@ import React from "react";
 import {Box, Button} from "@mui/material";
 import {connect} from "react-redux";
 import {fetchAddAttempt, fetchDeleteAllAttempts, setFormError} from "../../../redux/attempts/actions.js";
-
 export function Buttons({
                             currentEnteredX,
                             currentEnteredY,

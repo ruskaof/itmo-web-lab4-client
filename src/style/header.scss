@@ -1,32 +1,51 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300ita‌​lic,400italic,500,500italic,700,700italic,900italic,900);
+
 .header {
-  font-family: "Roboto", sans-serif;
-  background-color: var(--secondary-background);
-  padding-left: 50px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+    font-family: "Roboto", sans-serif;
+    background-color: var(--secondary-background);
+    padding-left: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .header__text {
+        color: var(--primary-text);
+        font-size: 2rem;
+    }
+
+    .header__text2 {
+        @extend .header__text;
+        font-size: 1.5rem;
+        &:after {
+            color: transparent;
+            content: " | ITMO, Saint-Petersburg 2022";
+            transition-property: color;
+            transition-duration: 0.5s;
+        }
+    }
+
+    &:hover {
+        .header__text2:after {
+            color: var(--primary-text);
+        }
+    }
+
+    .header__refs-cont {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+
+        .header__ref {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+    }
+
 }
 
-.header__text {
-  color: var(--primary-text);
-  font-size: 2rem;
-}
-
-.header__refs-cont {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  height: 100%;
-
-}
-
-.header__ref {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-}
 
 
