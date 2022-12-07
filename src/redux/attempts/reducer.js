@@ -27,6 +27,13 @@ import {
     FETCH_REGISTER_REQUEST,
     FETCH_REGISTER_SUCCESS,
     FETCH_REGISTER_FAILURE,
+    SET_TABLE_SEARCH_ID,
+    SET_TABLE_SEARCH_X,
+    SET_TABLE_SEARCH_Y,
+    SET_TABLE_SEARCH_R,
+    SET_TABLE_SEARCH_RESULT,
+    SET_TABLE_SEARCH_TIME,
+    SET_TABLE_SEARCH_PROCESSING_TIME,
 } from "./actions.js";
 
 const initialState = {
@@ -50,6 +57,13 @@ const initialState = {
     registerFormSuccessMessage: '',
     loggedIn: false, //JwtManager.userIsLoggedIn(),
     authFormIsLoading: false,
+    tableSearchId: '',
+    tableSearchX: '',
+    tableSearchY: '',
+    tableSearchR: '',
+    tableSearchResult: '',
+    tableSearchTime: '',
+    tableSearchProcessingTime: '',
 }
 
 export const reducer = (state = initialState, action) => {
@@ -174,11 +188,38 @@ export const reducer = (state = initialState, action) => {
             return {
                 ...state, authFormIsLoading: false, registerFormErrorMessage: action.payload,
             }
-        // case SET_LOGGINED_IN:
-        //     return {
-        //         ...state, loggedIn: action.payload,
-        //     }
+        case SET_TABLE_SEARCH_ID:
+            return {
+                ...state, tableSearchId: action.payload,
+            }
+        case SET_TABLE_SEARCH_X:
+            return {
+                ...state, tableSearchX: action.payload,
+            }
+        case SET_TABLE_SEARCH_Y:
+            return {
+                ...state, tableSearchY: action.payload,
+            }
+        case SET_TABLE_SEARCH_R:
+            return {
+                ...state, tableSearchR: action.payload,
+            }
+        case SET_TABLE_SEARCH_RESULT:
+            return {
+                ...state, tableSearchResult: action.payload,
+            }
+        case SET_TABLE_SEARCH_TIME:
+            return {
+                ...state, tableSearchTime: action.payload,
+            }
+        case SET_TABLE_SEARCH_PROCESSING_TIME:
+            return {
+                ...state, tableSearchProcessingTime: action.payload,
+            }
+
+
         default:
             return state;
     }
 }
+

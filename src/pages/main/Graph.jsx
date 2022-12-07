@@ -8,18 +8,20 @@ function getCssColor(name) {
         .getPropertyValue(name);
 }
 
-function Graph({attempts, r, addAttempt, fetchAttemptsWithOffset}) {
+function Graph(props) {
+    const {attempts, r, addAttempt, ...fieldData} = props;
+    console.log(fieldData)
     const canvasRef = React.useRef(null);
     useEffect(() => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
-        drawCanvasGraph(canvas, ctx, attempts, r, addAttempt);
+        drawCanvasGraph(canvas, ctx, props.attempts, props.r, props.addAttempt);
 
     });
 
     useEffect(() => {
-        fetchAttemptsWithOffset(-10, 10);
-    }, []);
+        fetchAttemptsWithOffset(-10, 10, fieldData);
+    }, [fieldData]);
 
     return (<div className="gradient-animation-box">
         <canvas id="graph" width="390" height="390" ref={canvasRef} className="gradient-animation-box__graph"/>
@@ -243,7 +245,15 @@ function mapDispatchToGraphProps(dispatch) {
 
 function mapStateToGraphProps(state) {
     return {
-        attempts: state.attemptsList, r: state.currentEnteredR
+        attempts: state.attemptsList,
+        r: state.currentEnteredR,
+        tableSearchR: state.tableSearchR,
+        tableSearchX: state.tableSearchX,
+        tableSearchY: state.tableSearchY,
+        tableSearchId: state.tableSearchId,
+        tableSearchTime: state.tableSearchTime,
+        tableSearchResult: state.tableSearchResult,
+        tableSearchProcessingTime: state.tableSearchProcessingTime,
     }
 }
 

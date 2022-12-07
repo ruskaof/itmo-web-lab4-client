@@ -43,17 +43,42 @@ export const ApplicationService = {
                     return response
                 }
             })
-    }, getAttemptsWithOffset: async function (offset, count) {
-        await sleep(1000); // TODO: remove it
+    }, getAttemptsWithOffset: async function (offset, count, searchParams) {
+        // Add search params only if they are not undefined
+        let url = `${BASE_URL}/get_with_offset?offset=${offset}&size=${count}`;
+        if (searchParams !== undefined) {
+            if (searchParams.tableSearchId) {
+                url += `&id=${searchParams.tableSearchId}`;
+            }
+            if (searchParams.tableSearchX) {
+                url += `&x=${searchParams.tableSearchX}`;
+            }
+            if (searchParams.tableSearchY) {
+                url += `&y=${searchParams.tableSearchY}`;
+            }
+            if (searchParams.tableSearchR) {
+                url += `&r=${searchParams.tableSearchR}`;
+            }
+            if (searchParams.tableSearchResult) {
+                url += `&result=${searchParams.tableSearchResult}`;
+            }
+            if (searchParams.tableSearchTime) {
+                url += `&time=${searchParams.tableSearchTime}`;
+            }
+            if (searchParams.tableSearchProcessingTime) {
+                url += `&processingTime=${searchParams.tableSearchProcessingTime}`;
+            }
+        }
+        console.log('ApplicationService.getAttemptsWithOffset ', url);
         console.log('ApplicationService.getAttemptsWithOffset', offset, count, "using access token: " + JwtManager.getCurrentAccessToken());
-        return fetch(`${BASE_URL}/get_with_offset?offset=${offset}&size=${count}`, {
+        return fetch(url, {
             method: 'GET', headers: {
                 'Authorization': `Bearer ${JwtManager.getCurrentAccessToken()}`
             }
         })
             .then(response => {
                 if (response.status === 403) {
-                    console.log("Access token expired, trying to refresh it");
+                    console.log("Access token expired, trying to refresh it. The error is: " + response);
                     return JwtManager.refreshAccessToken()
                         .then(() => {
                             return this.getAttemptsWithOffset(offset, count);
@@ -62,6 +87,7 @@ export const ApplicationService = {
                     return response
                 }
             })
+
 
     }, getRowsCount: async function () {
         await sleep(1000); // TODO: remove it

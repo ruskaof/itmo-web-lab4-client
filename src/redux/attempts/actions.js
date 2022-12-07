@@ -80,10 +80,10 @@ export const FETCH_ATTEMPTS_WITH_OFFSET_REQUEST = 'FETCH_ATTEMPTS_WITH_OFFSET_RE
 export const FETCH_ATTEMPTS_WITH_OFFSET_SUCCESS = 'FETCH_ATTEMPTS_WITH_OFFSET_SUCCESS';
 export const FETCH_ATTEMPTS_WITH_OFFSET_FAILURE = 'FETCH_ATTEMPTS_WITH_OFFSET_FAILURE';
 
-export const fetchAttemptsWithOffset = (offset, count) => {
+export const fetchAttemptsWithOffset = (offset, count, searchParams) => {
     return function (dispatch) {
         dispatch(fetchAttemptsWithOffsetRequest());
-        ApplicationService.getAttemptsWithOffset(offset, count)
+        ApplicationService.getAttemptsWithOffset(offset, count, searchParams)
             .then(data => {
                 dispatch(fetchAttemptsWithOffsetSuccess(data));
             })
@@ -328,6 +328,79 @@ const fetchRegisterSuccess = () => {
 const fetchRegisterFailure = errorMessage => {
     return {
         type: FETCH_REGISTER_FAILURE,
+        payload: errorMessage,
+    }
+}
+
+export const SET_TABLE_SEARCH_ID = 'SET_TABLE_SEARCH_ID';
+export const SET_TABLE_SEARCH_X = 'SET_TABLE_SEARCH_X';
+export const SET_TABLE_SEARCH_Y = 'SET_TABLE_SEARCH_Y';
+export const SET_TABLE_SEARCH_R = 'SET_TABLE_SEARCH_R';
+export const SET_TABLE_SEARCH_RESULT = 'SET_TABLE_SEARCH_RESULT';
+export const SET_TABLE_SEARCH_TIME = 'SET_TABLE_SEARCH_TIME';
+export const SET_TABLE_SEARCH_PROCESSING_TIME = 'SET_TABLE_SEARCH_PROCESSING_TIME';
+
+export const setTableSearchId = (id) => ({
+    type: SET_TABLE_SEARCH_ID, payload: id,
+})
+
+export const setTableSearchX = (x) => ({
+    type: SET_TABLE_SEARCH_X, payload: x,
+})
+
+export const setTableSearchY = (y) => ({
+    type: SET_TABLE_SEARCH_Y, payload: y,
+})
+
+export const setTableSearchR = (r) => ({
+    type: SET_TABLE_SEARCH_R, payload: r,
+})
+
+export const setTableSearchResult = (result) => ({
+    type: SET_TABLE_SEARCH_RESULT, payload: result,
+})
+
+export const setTableSearchTime = (time) => ({
+    type: SET_TABLE_SEARCH_TIME, payload: time,
+})
+
+export const setTableSearchProcessingTime = (processingTime) => ({
+    type: SET_TABLE_SEARCH_PROCESSING_TIME, payload: processingTime,
+})
+
+export const FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_REQUEST = 'FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_REQUEST';
+export const FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_SUCCESS = 'FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_SUCCESS';
+export const FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_FAILURE = 'FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_FAILURE';
+
+export const fetchAttemptsWithOffsetSearch = (offset, count, searchParams) => {
+return function (dispatch) {
+        dispatch(fetchAttemptsWithOffsetSearchRequest());
+        ApplicationService.getAttemptsWithOffset(offset, count, searchParams)
+            .then((result) => {
+                dispatch(fetchAttemptsWithOffsetSearchSuccess(result));
+            })
+            .catch(error => {
+                dispatch(fetchAttemptsWithOffsetSearchFailure(error.message));
+            })
+    }
+}
+
+const fetchAttemptsWithOffsetSearchRequest = () => {
+    return {
+        type: FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_REQUEST,
+    }
+}
+
+const fetchAttemptsWithOffsetSearchSuccess = (result) => {
+    return {
+        type: FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_SUCCESS,
+        payload: result,
+    }
+}
+
+const fetchAttemptsWithOffsetSearchFailure = errorMessage => {
+    return {
+        type: FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_FAILURE,
         payload: errorMessage,
     }
 }
