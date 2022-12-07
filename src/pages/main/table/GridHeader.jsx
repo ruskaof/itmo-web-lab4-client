@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function GridHeader({width}) {
-    return (<div className="datagrid" style={{width: width}}>
+    return (<div className="datagrid" style={{width: width, marginTop:'10px'}}>
         <div className="datagrid__row-item">
             <div className="datagrid__cell">ID</div>
         </div>

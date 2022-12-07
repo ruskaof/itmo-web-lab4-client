@@ -76,7 +76,7 @@ function VirtualizedGrid({fetchAttemptsWithOffset, nRows, getRowsCount, width}) 
             itemCount={nRows}
         >
             {({onItemsRendered, ref}) => (<FixedSizeList
-                height={150}
+                height={500}
                 itemCount={nRows}
                 itemSize={itemHeight}
                 onItemsRendered={onItemsRendered}

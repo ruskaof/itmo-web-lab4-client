@@ -27,9 +27,7 @@ import {
     FETCH_REGISTER_REQUEST,
     FETCH_REGISTER_SUCCESS,
     FETCH_REGISTER_FAILURE,
-    FETCH_ATTEMPTS_WITH_OFFSET_AND_SET,
 } from "./actions.js";
-import {JwtManager} from "../../services/JwtManager.js";
 
 const initialState = {
     loading: false,
@@ -176,12 +174,6 @@ export const reducer = (state = initialState, action) => {
             return {
                 ...state, authFormIsLoading: false, registerFormErrorMessage: action.payload,
             }
-        case FETCH_ATTEMPTS_WITH_OFFSET_AND_SET: {
-            const {attempts, attemptsCount} = action.payload;
-            return {
-                ...state, attemptsList: attempts, nRows: attemptsCount,
-            }
-        }
         // case SET_LOGGINED_IN:
         //     return {
         //         ...state, loggedIn: action.payload,
