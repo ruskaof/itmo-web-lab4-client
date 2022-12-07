@@ -1,8 +1,17 @@
 import React from "react";
 import {Box, TextField} from "@mui/material";
-import {setLoginFormPassword, setLoginFormUsername} from "../../../redux/attempts/actions.js";
+import {setLoginFormPassword, setLoginFormUsername} from "../../../../redux/attempts/actions.js";
 import {connect} from "react-redux";
 
+/**
+ * Should only be used in {@link LoginForm}
+ * @param username
+ * @param password
+ * @param setUsername
+ * @param setPassword
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function LoginFormFields({username, password, setUsername, setPassword}) {
     function handleChange(event) {
         const {name, value} = event.target;

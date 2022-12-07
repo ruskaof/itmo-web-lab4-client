@@ -1,43 +1,5 @@
 import {ApplicationService} from "../../services/ApplicationService.js";
 
-// export const FETCH_ATTEMPTS_REQUEST = 'FETCH_ATTEMPTS_REQUEST';
-// export const FETCH_ATTEMPTS_SUCCESS = 'FETCH_ATTEMPTS_SUCCESS';
-// export const FETCH_ATTEMPTS_FAILURE = 'FETCH_ATTEMPTS_FAILURE';
-//
-// export const fetchAttempts = () => {
-//     return function (dispatch) {
-//         dispatch(fetchAttemptsRequest());
-//         ApplicationService.getAllAttempts()
-//             .then(data => {
-//                 dispatch(fetchAttemptsSuccess(data));
-//             })
-//             .catch(error => {
-//                     dispatch(fetchAttemptsFailure(error.message));
-//                 }
-//             )
-//     }
-// }
-//
-// const fetchAttemptsRequest = () => {
-//     return {
-//         type: FETCH_ATTEMPTS_REQUEST,
-//     }
-// }
-//
-// const fetchAttemptsSuccess = attemptsList => {
-//     return {
-//         type: FETCH_ATTEMPTS_SUCCESS,
-//         payload: attemptsList,
-//     }
-// }
-//
-// const fetchAttemptsFailure = errorMessage => {
-//     return {
-//         type: FETCH_ATTEMPTS_FAILURE,
-//         payload: errorMessage,
-//     }
-// }
-
 export const FETCH_ADD_ATTEMPT_REQUEST = 'FETCH_ADD_ATTEMPT_REQUEST';
 export const FETCH_ADD_ATTEMPT_SUCCESS = 'FETCH_ADD_ATTEMPT_SUCCESS';
 export const FETCH_ADD_ATTEMPT_FAILURE = 'FETCH_ADD_ATTEMPT_FAILURE';
@@ -46,6 +8,9 @@ export const fetchAddAttempt = (attempt) => {
     return function (dispatch) {
         dispatch(fetchAddAttemptRequest());
         ApplicationService.addAttempt(attempt)
+            .then(response => {
+                return response.json();
+            })
             .then((newAttempt) => {
                 dispatch(fetchAddAttemptSuccess(newAttempt));
             })
@@ -202,6 +167,7 @@ export const getRowsCount = () => {
     return function (dispatch) {
         dispatch(getRowsCountRequest());
         ApplicationService.getRowsCount()
+            .then(response => response.json())
             .then(count => {
                 dispatch(getRowsCountSuccess(count));
             })
@@ -250,6 +216,15 @@ export const setLoginFormPassword = (password) => {
     }
 }
 
+// export const SET_LOGGINED_IN = 'SET_LOGGINED_IN';
+//
+// export const setLogginedIn = (logginedIn) => {
+//     return {
+//         type: SET_LOGGINED_IN,
+//         payload: logginedIn,
+//     }
+// }
+
 export const FETCH_LOGIN_REQUEST = 'FETCH_LOGIN_REQUEST';
 export const FETCH_LOGIN_SUCCESS = 'FETCH_LOGIN_SUCCESS';
 export const FETCH_LOGIN_FAILURE = 'FETCH_LOGIN_FAILURE';
@@ -259,9 +234,13 @@ export const fetchLogin = (username, password) => {
     return function (dispatch) {
         dispatch(fetchLoginRequest());
         ApplicationService.login(username, password)
-            .then(() => {
-                console.log("Login success");
-                dispatch(fetchLoginSuccess());
+            .then((result) => {
+                console.log("fetchLogin result: " + result);
+                if (result) {
+                    dispatch(fetchLoginSuccess());
+                } else {
+                    dispatch(fetchLoginFailure("Wrong username or password"));
+                }
             })
             .catch(error => {
                 dispatch(fetchLoginFailure(error.message));
@@ -284,6 +263,71 @@ const fetchLoginSuccess = () => {
 const fetchLoginFailure = errorMessage => {
     return {
         type: FETCH_LOGIN_FAILURE,
+        payload: errorMessage,
+    }
+}
+
+export const SET_REGISTER_FORM_PASSWORD = 'SET_REGISTER_FORM_PASSWORD';
+export const SET_REGISTER_FORM_PASSWORD_REPEAT = 'SET_REGISTER_FORM_PASSWORD_REPEAT';
+export const SET_REGISTER_FORM_USERNAME = 'SET_REGISTER_FORM_USERNAME';
+
+export const setRegisterFormPassword = (password) => {
+    return {
+        type: SET_REGISTER_FORM_PASSWORD,
+        payload: password,
+    }
+}
+
+export const setRegisterFormPasswordRepeat = (passwordRepeat) => {
+    return {
+        type: SET_REGISTER_FORM_PASSWORD_REPEAT,
+        payload: passwordRepeat,
+    }
+}
+
+export const setRegisterFormUsername = (username) => {
+    return {
+        type: SET_REGISTER_FORM_USERNAME,
+        payload: username,
+    }
+}
+
+export const FETCH_REGISTER_REQUEST = 'FETCH_REGISTER_REQUEST';
+export const FETCH_REGISTER_SUCCESS = 'FETCH_REGISTER_SUCCESS';
+export const FETCH_REGISTER_FAILURE = 'FETCH_REGISTER_FAILURE';
+
+export const fetchRegister = (username, password) => {
+return function (dispatch) {
+        dispatch(fetchRegisterRequest());
+        ApplicationService.register(username, password)
+            .then((result) => {
+                if (result) {
+                    dispatch(fetchRegisterSuccess());
+                } else {
+                    dispatch(fetchRegisterFailure("User with such username already exists"));
+                }
+            })
+            .catch(error => {
+                dispatch(fetchRegisterFailure(error.message));
+            })
+    }
+}
+
+const fetchRegisterRequest = () => {
+    return {
+        type: FETCH_REGISTER_REQUEST,
+    }
+}
+
+const fetchRegisterSuccess = () => {
+    return {
+        type: FETCH_REGISTER_SUCCESS,
+    }
+}
+
+const fetchRegisterFailure = errorMessage => {
+    return {
+        type: FETCH_REGISTER_FAILURE,
         payload: errorMessage,
     }
 }

@@ -16,33 +16,45 @@ export const JwtManager = {
                 'Content-Type': 'application/json',
             }, body: body
         })
-            .then(response => response.json())
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else if (response.status === 401) {
+                    return Promise.reject("Invalid username or password");
+                } else {
+                    console.log("Unexpected response status: " + response.status);
+                    return Promise.reject("Invalid username or password");
+                }
+            })
             .then(data => {
+                console.log(data);
                 localStorage.setItem('access_token', data.access_token);
                 localStorage.setItem('refresh_token', data.refresh_token);
-                return data;
+                return true;
             })
             .catch(error => {
                 console.log(error);
+                return false;
             })
-    },
-    refreshAccessToken() {
-        return fetch(`${BASE_URL}/api/user/token/refresh`, {
-            method: 'POST', headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('refresh_token')}`
+    }, refreshAccessToken() {
+        console.log("JwtManager.refreshAccessToken");
+        return fetch(`${BASE_URL}/user/token/refresh`, {
+            method: 'GET', headers: {
+                'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('refresh_token')}`
             }
         }).then(response => response.json())
             .then(data => {
                 localStorage.setItem('access_token', data.access_token);
+                console.log(data);
                 return data;
             })
             .catch(error => {
                 console.log(error);
             })
 
-    },
-    getCurrentAccessToken() {
+    }, getCurrentAccessToken() {
         return localStorage.getItem('access_token');
+    }, userIsLoggedIn() {
+        return localStorage.getItem('access_token') !== null;
     }
 }

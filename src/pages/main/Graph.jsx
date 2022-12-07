@@ -238,7 +238,7 @@ function drawCanvasGraph(canvas, ctx, dotsList, userSelectedR, addAttempt) {
 function mapDispatchToGraphProps(dispatch) {
     return {
         addAttempt: (attempt) => dispatch(fetchAddAttempt(attempt)),
-        fetchAttemptsWithOffset: (offset, limit) => dispatch(fetchAttemptsWithOffset(offset, limit)),
+        fetchAttemptsWithOffset: (offset, limit) => dispatch(fetchAttemptsWithOffsetAndSet(offset, limit)),
     }
 }
 

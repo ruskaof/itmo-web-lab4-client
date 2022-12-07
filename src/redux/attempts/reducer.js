@@ -20,8 +20,16 @@ import {
     SET_LOGIN_FORM_USERNAME,
     FETCH_LOGIN_REQUEST,
     FETCH_LOGIN_SUCCESS,
-    FETCH_LOGIN_FAILURE
+    FETCH_LOGIN_FAILURE,
+    SET_REGISTER_FORM_PASSWORD,
+    SET_REGISTER_FORM_PASSWORD_REPEAT,
+    SET_REGISTER_FORM_USERNAME,
+    FETCH_REGISTER_REQUEST,
+    FETCH_REGISTER_SUCCESS,
+    FETCH_REGISTER_FAILURE,
+    FETCH_ATTEMPTS_WITH_OFFSET_AND_SET,
 } from "./actions.js";
+import {JwtManager} from "../../services/JwtManager.js";
 
 const initialState = {
     loading: false,
@@ -35,12 +43,20 @@ const initialState = {
     formErrorMessage: '',
     loginFormUsername: '',
     loginFormPassword: '',
+    loginFormErrorMessage: '',
+    loginFormSuccessMessage: '',
+    registerFormUsername: '',
+    registerFormPassword: '',
+    registerFormPasswordRepeat: '',
+    registerFormErrorMessage: '',
+    registerFormSuccessMessage: '',
+    loggedIn: false, //JwtManager.userIsLoggedIn(),
+    authFormIsLoading: false,
 }
 
 export const reducer = (state = initialState, action) => {
     switch (action.type) {
         case FETCH_ADD_ATTEMPT_SUCCESS:
-            console.log('reducer.FETCH_ADD_ATTEMPT_SUCCESS: offset=', state.offset, 'nRows=', state.nRows, 'length=', state.attemptsList.length);
             return {
                 ...state, attemptsList: [...state.attemptsList, action.payload], nRows: state.nRows + 1,
             }
@@ -73,7 +89,10 @@ export const reducer = (state = initialState, action) => {
         case FETCH_ATTEMPTS_WITH_OFFSET_SUCCESS:
             console.log('FETCH_ATTEMPTS_WITH_OFFSET_SUCCESS: ', action.payload);
             return {
-                ...state, loading: false, attemptsList: action.payload.attempts, nRows: action.payload.attemptsCount,
+                ...state,
+                loading: false,
+                attemptsList: action.payload.attempts || state.attemptsList,
+                nRows: action.payload.attemptsCount || state.nRows,
             }
         case FETCH_ATTEMPTS_WITH_OFFSET_FAILURE:
             return {
@@ -121,16 +140,52 @@ export const reducer = (state = initialState, action) => {
             }
         case FETCH_LOGIN_REQUEST:
             return {
-                ...state, loading: true,
+                ...state, authFormIsLoading: true,
             }
         case FETCH_LOGIN_SUCCESS:
+            console.log('FETCH_LOGIN_SUCCESS: ', action.payload);
             return {
-                ...state, loading: false
+                ...state, authFormIsLoading: false, loginFormErrorMessage: '', loggedIn: true
             }
         case FETCH_LOGIN_FAILURE:
+            console.log('FETCH_LOGIN_FAILURE: ' + action.payload);
             return {
-                ...state, loading: false, errorMessage: action.payload,
+                ...state, authFormIsLoading: false, loginFormErrorMessage: action.payload,
             }
+        case SET_REGISTER_FORM_PASSWORD:
+            return {
+                ...state, registerFormPassword: action.payload,
+            }
+        case SET_REGISTER_FORM_PASSWORD_REPEAT:
+            return {
+                ...state, registerFormPasswordRepeat: action.payload,
+            }
+        case SET_REGISTER_FORM_USERNAME:
+            return {
+                ...state, registerFormUsername: action.payload,
+            }
+        case FETCH_REGISTER_REQUEST:
+            return {
+                ...state, authFormIsLoading: true,
+            }
+        case FETCH_REGISTER_SUCCESS:
+            return {
+                ...state, authFormIsLoading: false
+            }
+        case FETCH_REGISTER_FAILURE:
+            return {
+                ...state, authFormIsLoading: false, registerFormErrorMessage: action.payload,
+            }
+        case FETCH_ATTEMPTS_WITH_OFFSET_AND_SET: {
+            const {attempts, attemptsCount} = action.payload;
+            return {
+                ...state, attemptsList: attempts, nRows: attemptsCount,
+            }
+        }
+        // case SET_LOGGINED_IN:
+        //     return {
+        //         ...state, loggedIn: action.payload,
+        //     }
         default:
             return state;
     }
