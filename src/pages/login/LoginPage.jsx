@@ -1,8 +1,8 @@
 import React from "react";
-import LoginFormButtons from "./form/login/LoginFormButtons.jsx";
-import LoginForm from "./form/login/LoginForm.jsx";
+import LoginFormButtons from "./components/login/LoginFormButtons.jsx";
+import LoginForm from "./components/login/LoginForm.jsx";
 import {Box, Tab, Tabs, Typography} from "@mui/material";
-import RegisterForm from "./form/register/RegisterForm.jsx";
+import RegisterForm from "./components/register/RegisterForm.jsx";
 
 export default function LoginPage() {
     const [pageId, setPageId] = React.useState(0);

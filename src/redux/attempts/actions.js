@@ -1,4 +1,4 @@
-import {ApplicationService} from "../../services/ApplicationService.js";
+import {ApplicationService} from "../../service/ApplicationService.js";
 
 export const FETCH_ADD_ATTEMPT_REQUEST = 'FETCH_ADD_ATTEMPT_REQUEST';
 export const FETCH_ADD_ATTEMPT_SUCCESS = 'FETCH_ADD_ATTEMPT_SUCCESS';

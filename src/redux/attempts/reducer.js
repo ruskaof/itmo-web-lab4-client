@@ -55,7 +55,7 @@ const initialState = {
     registerFormPasswordRepeat: '',
     registerFormErrorMessage: '',
     registerFormSuccessMessage: '',
-    loggedIn: false, //JwtManager.userIsLoggedIn(),
+    loggedIn: false,
     authFormIsLoading: false,
     tableSearchId: '',
     tableSearchX: '',

@@ -17,7 +17,7 @@ const tableWidth = 1200;
 function Table(props) {
     return (<div style={{overflow: "auto", width: {tableWidth}}}>
         <GridHeader width={tableWidth} {...props}/>
-        <VirtualizedGrid width={tableWidth}/>
+        <VirtualizedGrid width={tableWidth} {...props}/>
     </div>)
 }
 

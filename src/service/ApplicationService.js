@@ -45,28 +45,29 @@ export const ApplicationService = {
             })
     }, getAttemptsWithOffset: async function (offset, count, searchParams) {
         // Add search params only if they are not undefined
+        console.log("searchParams", searchParams);
         let url = `${BASE_URL}/get_with_offset?offset=${offset}&size=${count}`;
         if (searchParams !== undefined) {
-            if (searchParams.tableSearchId) {
-                url += `&id=${searchParams.tableSearchId}`;
+            if (searchParams.searchId) {
+                url += `&id=${searchParams.searchId}`;
             }
-            if (searchParams.tableSearchX) {
-                url += `&x=${searchParams.tableSearchX}`;
+            if (searchParams.searchX) {
+                url += `&x=${searchParams.searchX}`;
             }
-            if (searchParams.tableSearchY) {
-                url += `&y=${searchParams.tableSearchY}`;
+            if (searchParams.searchY) {
+                url += `&y=${searchParams.searchY}`;
             }
-            if (searchParams.tableSearchR) {
-                url += `&r=${searchParams.tableSearchR}`;
+            if (searchParams.searchR) {
+                url += `&r=${searchParams.searchR}`;
             }
-            if (searchParams.tableSearchResult) {
-                url += `&result=${searchParams.tableSearchResult}`;
+            if (searchParams.searchResult) {
+                url += `&result=${searchParams.searchResult}`;
             }
-            if (searchParams.tableSearchTime) {
-                url += `&time=${searchParams.tableSearchTime}`;
+            if (searchParams.searchTime) {
+                url += `&time=${searchParams.searchTime}`;
             }
-            if (searchParams.tableSearchProcessingTime) {
-                url += `&processingTime=${searchParams.tableSearchProcessingTime}`;
+            if (searchParams.searchProcessTime) {
+                url += `&processingTime=${searchParams.searchProcessTime}`;
             }
         }
         console.log('ApplicationService.getAttemptsWithOffset ', url);

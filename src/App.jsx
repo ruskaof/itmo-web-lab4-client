@@ -3,7 +3,7 @@ import {Provider} from "react-redux";
 import {store} from "./redux/attempts/store.js";
 import MainPage from "./pages/main/MainPage.jsx";
 import {Routes, Route, Link} from 'react-router-dom';
-import Header from "./common/Header.jsx";
+import Header from "./components/Header.jsx";
 import LoginPage from "./pages/login/LoginPage.jsx";
 
 

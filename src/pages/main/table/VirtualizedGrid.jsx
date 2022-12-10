@@ -2,14 +2,17 @@ import React, {useEffect} from "react";
 import {FixedSizeList} from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
 import {connect} from "react-redux";
-import {fetchAttemptsWithOffset, getRowsCount} from "../../../redux/attempts/actions.js";
-import {ApplicationService} from "../../../services/ApplicationService.js";
+import {fetchAttemptsWithOffset, fetchAttemptsWithOffsetSearch, getRowsCount} from "../../../redux/attempts/actions.js";
+import {ApplicationService} from "../../../service/ApplicationService.js";
 import {Skeleton} from "@mui/material";
 
 let items = {}
 const itemHeight = 50;
 
-function VirtualizedGrid({fetchAttemptsWithOffset, nRows, getRowsCount, width}) {
+function VirtualizedGrid(props) {
+    const {nRows, getRowsCount, width, ...fieldData} = props;
+    console.log("data in virtualized grid")
+    console.log(fieldData)
 
     const Row = ({index, style}) => {
         const item = items[index];
@@ -48,6 +51,10 @@ function VirtualizedGrid({fetchAttemptsWithOffset, nRows, getRowsCount, width}) 
         getRowsCount()
     })
 
+    useEffect(() => {
+        items = {}
+    }, [fieldData])
+
     const isItemLoaded = (index) => !!items[index]
 
     const loadMoreItems = (startIndex, stopIndex) => {
@@ -56,7 +63,7 @@ function VirtualizedGrid({fetchAttemptsWithOffset, nRows, getRowsCount, width}) 
         const visibleRange = [...Array(length).keys()].map(i => i + startIndex)
         const itemsRetrieved = visibleRange.every(index => !!items[index])
 
-        return ApplicationService.getAttemptsWithOffset(startIndex, length + 1) // +1?
+        return ApplicationService.getAttemptsWithOffset(startIndex, length + 1, fieldData) // +1?
             .then(response => response.json())
             .then(response => {
                 response.attempts.forEach((item, index) => {
@@ -94,9 +101,7 @@ function VirtualizedGrid({fetchAttemptsWithOffset, nRows, getRowsCount, width}) 
 
 function mapDispatchToVirtualizedGridProps(dispatch) {
     return {
-        fetchAttemptsWithOffset: (offset, limit) => {
-            dispatch(fetchAttemptsWithOffset(offset, limit))
-        }, getRowsCount: () => {
+        getRowsCount: () => {
             dispatch(getRowsCount())
         }
     }

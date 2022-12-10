@@ -12,7 +12,6 @@ function LoginForm({errorMessage, loggedIn}) {
             <LoginFormFields/>
             <LoginFormButtons/>
             {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
-            {/*loggedIn && <Alert severity="success">You are logged in</Alert>*/}
             {loggedIn &&  <Navigate to="/"/>}
         </div>
     )
