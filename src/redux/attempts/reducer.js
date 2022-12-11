@@ -14,7 +14,6 @@ import {
     SET_LOGIN_FORM_PASSWORD,
     SET_FORM_ERROR,
     SET_R,
-    SET_SCROLL_START,
     SET_X,
     SET_Y,
     SET_LOGIN_FORM_USERNAME,
@@ -34,14 +33,14 @@ import {
     SET_TABLE_SEARCH_RESULT,
     SET_TABLE_SEARCH_TIME,
     SET_TABLE_SEARCH_PROCESSING_TIME,
+    SET_TABLE_ATTEMPTS_LIST,
+    SET_TABLE_HAS_MORE,
 } from "./actions.js";
 
 const initialState = {
     loading: false,
     serverErrorMessage: '',
     attemptsList: [],
-    nRows: 100,
-    tableScrollStart: 0,
     currentEnteredX: 0,
     currentEnteredY: 0,
     currentEnteredR: 1,
@@ -64,21 +63,21 @@ const initialState = {
     tableSearchResult: '',
     tableSearchTime: '',
     tableSearchProcessingTime: '',
+    tableAttemptsList: [],
+    tableHasMore: true,
 }
 
 export const reducer = (state = initialState, action) => {
     switch (action.type) {
         case FETCH_ADD_ATTEMPT_SUCCESS:
             return {
-                ...state, attemptsList: [...state.attemptsList, action.payload], nRows: state.nRows + 1,
+                ...state, attemptsList: [...state.attemptsList, action.payload], tableHasMore: true
             }
         case FETCH_ADD_ATTEMPT_FAILURE:
-            console.log('reducer.FETCH_ADD_ATTEMPT_FAILURE:' + action.payload);
             return {
                 ...state, errorMessage: action.payload,
             }
-        case FETCH_ADD_ATTEMPT_REQUEST:
-            console.log('reducer.FETCH_ADD_ATTEMPT_REQUEST: ' + action.payload);
+        case FETCH_ADD_ATTEMPT_REQUEST:;
             return {
                 ...state, loading: true,
             }
@@ -88,7 +87,7 @@ export const reducer = (state = initialState, action) => {
             }
         case FETCH_DELETE_ALL_ATTEMPTS_SUCCESS:
             return {
-                ...state, loading: false, attemptsList: [], nRows: 0, tableScrollStart: 0,
+                ...state, loading: false, attemptsList: [], tableAttemptsList: [],
             }
         case FETCH_DELETE_ALL_ATTEMPTS_FAILURE:
             return {
@@ -99,20 +98,15 @@ export const reducer = (state = initialState, action) => {
                 ...state, loading: true,
             }
         case FETCH_ATTEMPTS_WITH_OFFSET_SUCCESS:
-            console.log('FETCH_ATTEMPTS_WITH_OFFSET_SUCCESS: ', action.payload);
             return {
                 ...state,
                 loading: false,
-                attemptsList: action.payload.attempts || state.attemptsList,
-                nRows: action.payload.attemptsCount || state.nRows,
+                attemptsList: action.payload.attempts,
+                tableDataHasMore: action.payload.has_more
             }
         case FETCH_ATTEMPTS_WITH_OFFSET_FAILURE:
             return {
                 ...state, loading: false, errorMessage: action.payload,
-            }
-        case SET_SCROLL_START:
-            return {
-                ...state, tableScrollStart: action.payload,
             }
         case SET_X:
             return {
@@ -155,12 +149,10 @@ export const reducer = (state = initialState, action) => {
                 ...state, authFormIsLoading: true,
             }
         case FETCH_LOGIN_SUCCESS:
-            console.log('FETCH_LOGIN_SUCCESS: ', action.payload);
             return {
                 ...state, authFormIsLoading: false, loginFormErrorMessage: '', loggedIn: true
             }
         case FETCH_LOGIN_FAILURE:
-            console.log('FETCH_LOGIN_FAILURE: ' + action.payload);
             return {
                 ...state, authFormIsLoading: false, loginFormErrorMessage: action.payload,
             }
@@ -190,31 +182,39 @@ export const reducer = (state = initialState, action) => {
             }
         case SET_TABLE_SEARCH_ID:
             return {
-                ...state, tableSearchId: action.payload,
+                ...state, tableSearchId: action.payload, tableAttemptsList: [],
             }
         case SET_TABLE_SEARCH_X:
             return {
-                ...state, tableSearchX: action.payload,
+                ...state, tableSearchX: action.payload, tableAttemptsList: [],
             }
         case SET_TABLE_SEARCH_Y:
             return {
-                ...state, tableSearchY: action.payload,
+                ...state, tableSearchY: action.payload, tableAttemptsList: [],
             }
         case SET_TABLE_SEARCH_R:
             return {
-                ...state, tableSearchR: action.payload,
+                ...state, tableSearchR: action.payload, tableAttemptsList: [],
             }
         case SET_TABLE_SEARCH_RESULT:
             return {
-                ...state, tableSearchResult: action.payload,
+                ...state, tableSearchResult: action.payload, tableAttemptsList: [],
             }
         case SET_TABLE_SEARCH_TIME:
             return {
-                ...state, tableSearchTime: action.payload,
+                ...state, tableSearchTime: action.payload, tableAttemptsList: [],
             }
         case SET_TABLE_SEARCH_PROCESSING_TIME:
             return {
-                ...state, tableSearchProcessingTime: action.payload,
+                ...state, tableSearchProcessingTime: action.payload, tableAttemptsList: [],
+            }
+        case SET_TABLE_ATTEMPTS_LIST:
+            return {
+                ...state, tableAttemptsList: action.payload,
+            }
+        case SET_TABLE_HAS_MORE:
+            return {
+                ...state, tableHasMore: action.payload,
             }
 
 

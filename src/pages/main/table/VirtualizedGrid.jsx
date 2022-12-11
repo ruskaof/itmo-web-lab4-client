@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {FixedSizeList} from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
 import {connect} from "react-redux";
-import {fetchAttemptsWithOffset, fetchAttemptsWithOffsetSearch, getRowsCount} from "../../../redux/attempts/actions.js";
+import {getRowsCount} from "../../../redux/attempts/actions.js";
 import {ApplicationService} from "../../../service/ApplicationService.js";
 import {Skeleton} from "@mui/material";
 
@@ -11,8 +11,7 @@ const itemHeight = 50;
 
 function VirtualizedGrid(props) {
     const {nRows, getRowsCount, width, ...fieldData} = props;
-    console.log("data in virtualized grid")
-    console.log(fieldData)
+
 
     const Row = ({index, style}) => {
         const item = items[index];

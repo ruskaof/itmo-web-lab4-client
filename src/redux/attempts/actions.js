@@ -114,14 +114,6 @@ const fetchAttemptsWithOffsetFailure = errorMessage => {
     }
 }
 
-export const SET_SCROLL_START = 'SET_SCROLL_START';
-
-export const setScrollStart = (scrollStart) => {
-    return {
-        type: SET_SCROLL_START,
-        payload: scrollStart,
-    }
-}
 
 export const SET_X = 'SET_X';
 
@@ -230,12 +222,10 @@ export const FETCH_LOGIN_SUCCESS = 'FETCH_LOGIN_SUCCESS';
 export const FETCH_LOGIN_FAILURE = 'FETCH_LOGIN_FAILURE';
 
 export const fetchLogin = (username, password) => {
-    console.log("fetchLogin with username: " + username + " and password: " + password);
     return function (dispatch) {
         dispatch(fetchLoginRequest());
         ApplicationService.login(username, password)
             .then((result) => {
-                console.log("fetchLogin result: " + result);
                 if (result) {
                     dispatch(fetchLoginSuccess());
                 } else {
@@ -402,5 +392,23 @@ const fetchAttemptsWithOffsetSearchFailure = errorMessage => {
     return {
         type: FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_FAILURE,
         payload: errorMessage,
+    }
+}
+
+export const SET_TABLE_ATTEMPTS_LIST = 'SET_TABLE_ATTEMPTS_LIST';
+
+export const setTableAttemptsList = (attemptsList) => {
+    return {
+        type: SET_TABLE_ATTEMPTS_LIST,
+        payload: attemptsList,
+    }
+}
+
+export const SET_TABLE_HAS_MORE = 'SET_TABLE_HAS_MORE';
+
+export const setTableHasMore = (hasNext) => {
+    return {
+        type: SET_TABLE_HAS_MORE,
+        payload: hasNext,
     }
 }

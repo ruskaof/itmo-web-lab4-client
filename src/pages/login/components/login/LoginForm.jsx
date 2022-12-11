@@ -6,7 +6,6 @@ import {Alert} from "@mui/material";
 import {Navigate} from "react-router-dom";
 
 function LoginForm({errorMessage, loggedIn}) {
-    console.log("ERR: " + errorMessage);
     return (
         <div>
             <LoginFormFields/>

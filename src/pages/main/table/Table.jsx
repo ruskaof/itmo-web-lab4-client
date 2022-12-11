@@ -1,5 +1,4 @@
 import React from "react";
-import VirtualizedGrid from "./VirtualizedGrid.jsx";
 import GridHeader from "./GridHeader.jsx";
 import {
     setTableSearchId,
@@ -11,13 +10,14 @@ import {
     setTableSearchY
 } from "../../../redux/attempts/actions.js";
 import {connect} from "react-redux";
+import VirtualizedGridV2 from "./VirtualizedGridV2.jsx";
 
 const tableWidth = 1200;
 
 function Table(props) {
     return (<div style={{overflow: "auto", width: {tableWidth}}}>
         <GridHeader width={tableWidth} {...props}/>
-        <VirtualizedGrid width={tableWidth} {...props}/>
+        <VirtualizedGridV2/>
     </div>)
 }
 

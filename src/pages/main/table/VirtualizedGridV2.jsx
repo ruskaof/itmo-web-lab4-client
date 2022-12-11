@@ -1,30 +1,83 @@
-import React from "@types/react";
+import React, {useRef} from "react";
 import InfiniteLoader from "react-window-infinite-loader";
 import {FixedSizeList} from "react-window";
+import {useEffect} from "react";
+import {ApplicationService} from "../../../service/ApplicationService.js";
+import {connect} from "react-redux";
+import {setTableAttemptsList, setTableHasMore} from "../../../redux/attempts/actions.js";
 
-function ExampleWrapper({
-                            hasNextPage,
-                            isNextPageLoading,
-                            items,
-                            loadNextPage
-                        }) {
-    // If there are more items to be loaded then add an extra row to hold a loading indicator.
-    const itemCount = hasNextPage ? items.length + 1 : items.length;
+const pageSize = 25;
 
-    // Only load 1 page of items at a time.
-    // Pass an empty callback to InfiniteLoader in case it asks us to load more than once.
+function VirtualizedGridV2(props) {
+    const {
+        hasMore,
+        setHasMore,
+        setAttempts,
+        attempts,
+        width,
+        searchId,
+        searchX,
+        searchY,
+        searchR,
+        searchResult,
+        searchTime,
+        searchProcessingTime
+    } = props;
+
+    const infiniteLoaderRef = useRef(null);
+    const hasMountedRef = useRef(false);
+
+
+
+    const [isNextPageLoading, setIsNextPageLoading] = React.useState(false);
+
+    const itemCount = hasMore ? attempts.length + 1 : attempts.length;
+
     const loadMoreItems = isNextPageLoading ? () => {
+        console.log("loadMoreItems is already loading")
     } : loadNextPage;
 
-    // Every row is loaded except for our loading indicator row.
-    const isItemLoaded = index => !hasNextPage || index < items.length;
+    const isItemLoaded = (index) => {
+        return !hasMore || index < attempts.length;
+    }
 
-    // Render an item or a loading indicator.
+    function loadNextPage() {
+        console.log("Start loading next page");
+        setIsNextPageLoading(true);
+        return ApplicationService.getAttemptsWithOffset(attempts.length, pageSize, {
+            searchId, searchX, searchY, searchR, searchResult, searchTime, searchProcessingTime
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Loaded next page, got " + data.attempts.length + " attempts");
+                setAttempts(attempts.concat(data.attempts));
+                setHasMore(data.has_more);
+                setIsNextPageLoading(false);
+            })
+    }
+
+    useEffect(() => {
+        setIsNextPageLoading(false);
+        setHasMore(true);
+        if (hasMountedRef.current) {
+            if (infiniteLoaderRef.current) {
+                console.log("Search params changed, reloading attempts");
+                console.log("Resetting infinite loader");
+
+                infiniteLoaderRef.current.resetloadMoreItemsCache(false);
+                loadNextPage()
+            }
+        }
+        hasMountedRef.current = true;
+
+        console.log("isnextpageloading: " + isNextPageLoading + ", hasmore: " + hasMore);
+    }, [searchId, searchX, searchY, searchR, searchResult, searchTime, searchProcessingTime])
+
     const Item = ({index, style}) => {
-        let content;
         if (!isItemLoaded(index)) {
             return <div style={style}>Loading...</div>;
         } else {
+            const item = attempts[index];
             return <div style={style} className="datagrid">
                 <div className="datagrid__row-item">
                     <div className="datagrid__cell">{item.id}</div>
@@ -57,13 +110,40 @@ function ExampleWrapper({
         isItemLoaded={isItemLoaded}
         itemCount={itemCount}
         loadMoreItems={loadMoreItems}
+        ref={infiniteLoaderRef}
     >
         {({onItemsRendered, ref}) => (<FixedSizeList
+            height={500}
             itemCount={itemCount}
             onItemsRendered={onItemsRendered}
+            itemSize={50}
             ref={ref}
+            width={width}
         >
             {Item}
         </FixedSizeList>)}
     </InfiniteLoader>);
 }
+
+function mapStateToTableProps(state) {
+    return {
+        searchId: state.tableSearchId,
+        searchX: state.tableSearchX,
+        searchY: state.tableSearchY,
+        searchR: state.tableSearchR,
+        searchResult: state.tableSearchResult,
+        searchTime: state.tableSearchTime,
+        searchProcessingTime: state.tableSearchProcessingTime,
+        hasMore: state.tableHasMore,
+        attempts: state.tableAttemptsList,
+    }
+}
+
+function mapDispatchToTableProps(dispatch) {
+    return {
+        setHasMore: (hasMore) => dispatch(setTableHasMore(hasMore)),
+        setAttempts: (attempts) => dispatch(setTableAttemptsList(attempts)),
+    }
+}
+
+export default connect(mapStateToTableProps, mapDispatchToTableProps)(VirtualizedGridV2);

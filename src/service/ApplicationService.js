@@ -5,8 +5,6 @@ export const BASE_URL = 'http://localhost:8080/api';
 export const ApplicationService = {
     addAttempt: async function (attempt) {
         let body = JSON.stringify(attempt)
-        console.log('ApplicationService.addAttempt', body);
-        await sleep(1000); // TODO: remove it
         return fetch(`${BASE_URL}/add`, {
             method: 'POST', headers: {
                 'Content-Type': 'application/json', 'Authorization': `Bearer ${JwtManager.getCurrentAccessToken()}`
@@ -14,7 +12,6 @@ export const ApplicationService = {
         })
             .then(response => {
                 if (response.status === 403) {
-                    console.log("Access token expired, trying to refresh it");
                     return JwtManager.refreshAccessToken()
                         .then(() => {
                             return this.addAttempt(attempt);
@@ -26,8 +23,6 @@ export const ApplicationService = {
 
 
     }, removeAllAttempts: async function () {
-        await sleep(1000); // TODO: remove it
-        console.log('ApplicationService.removeAllAttempts');
         return fetch(`${BASE_URL}/delete_all`, {
             method: 'DELETE', headers: {
                 'Authorization': `Bearer ${JwtManager.getCurrentAccessToken()}`
@@ -44,8 +39,8 @@ export const ApplicationService = {
                 }
             })
     }, getAttemptsWithOffset: async function (offset, count, searchParams) {
+        await sleep(1000); // TODO: remove it
         // Add search params only if they are not undefined
-        console.log("searchParams", searchParams);
         let url = `${BASE_URL}/get_with_offset?offset=${offset}&size=${count}`;
         if (searchParams !== undefined) {
             if (searchParams.searchId) {
@@ -70,8 +65,7 @@ export const ApplicationService = {
                 url += `&processingTime=${searchParams.searchProcessTime}`;
             }
         }
-        console.log('ApplicationService.getAttemptsWithOffset ', url);
-        console.log('ApplicationService.getAttemptsWithOffset', offset, count, "using access token: " + JwtManager.getCurrentAccessToken());
+        console.log("url", url);
         return fetch(url, {
             method: 'GET', headers: {
                 'Authorization': `Bearer ${JwtManager.getCurrentAccessToken()}`
@@ -79,7 +73,6 @@ export const ApplicationService = {
         })
             .then(response => {
                 if (response.status === 403) {
-                    console.log("Access token expired, trying to refresh it. The error is: " + response);
                     return JwtManager.refreshAccessToken()
                         .then(() => {
                             return this.getAttemptsWithOffset(offset, count);
@@ -91,7 +84,6 @@ export const ApplicationService = {
 
 
     }, getRowsCount: async function () {
-        await sleep(1000); // TODO: remove it
         return fetch(`${BASE_URL}/get_count`, {
             method: 'GET', headers: {
                 'Authorization': `Bearer ${JwtManager.getCurrentAccessToken()}`
@@ -99,7 +91,6 @@ export const ApplicationService = {
         })
             .then(response => {
                 if (response.status === 403) {
-                    console.log("Access token expired, trying to refresh it");
                     return JwtManager.refreshAccessToken()
                         .then(() => {
                             return this.getRowsCount();

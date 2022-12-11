@@ -8,9 +8,7 @@ export const JwtManager = {
      * @returns {Promise<any>}
      */
     login(username, password) {
-        console.log("JwtManager.login with username: " + username + " and password: " + password);
         const body = JSON.stringify({'username': username, 'password': password});
-        console.log('JwtManager.login', body);
         return fetch(`${BASE_URL}/login`, {
             method: 'POST', headers: {
                 'Content-Type': 'application/json',
@@ -22,12 +20,10 @@ export const JwtManager = {
                 } else if (response.status === 401) {
                     return Promise.reject("Invalid username or password");
                 } else {
-                    console.log("Unexpected response status: " + response.status);
                     return Promise.reject("Invalid username or password");
                 }
             })
             .then(data => {
-                console.log(data);
                 localStorage.setItem('access_token', data.access_token);
                 localStorage.setItem('refresh_token', data.refresh_token);
                 return true;
@@ -37,7 +33,6 @@ export const JwtManager = {
                 return false;
             })
     }, refreshAccessToken() {
-        console.log("JwtManager.refreshAccessToken");
         return fetch(`${BASE_URL}/user/token/refresh`, {
             method: 'GET', headers: {
                 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('refresh_token')}`
@@ -45,7 +40,6 @@ export const JwtManager = {
         }).then(response => response.json())
             .then(data => {
                 localStorage.setItem('access_token', data.access_token);
-                console.log(data);
                 return data;
             })
             .catch(error => {

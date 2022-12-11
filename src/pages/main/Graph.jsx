@@ -10,7 +10,6 @@ function getCssColor(name) {
 
 function Graph(props) {
     const {attempts, r, addAttempt, ...fieldData} = props;
-    console.log(fieldData)
     const canvasRef = React.useRef(null);
     useEffect(() => {
         const canvas = canvasRef.current;
