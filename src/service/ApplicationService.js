@@ -39,7 +39,6 @@ export const ApplicationService = {
                 }
             })
     }, getAttemptsWithOffset: async function (offset, count, searchParams) {
-        await sleep(1000); // TODO: remove it
         // Add search params only if they are not undefined
         let url = `${BASE_URL}/get_with_offset?offset=${offset}&size=${count}`;
         if (searchParams !== undefined) {
@@ -65,7 +64,6 @@ export const ApplicationService = {
                 url += `&processingTime=${searchParams.searchProcessTime}`;
             }
         }
-        console.log("url", url);
         return fetch(url, {
             method: 'GET', headers: {
                 'Authorization': `Bearer ${JwtManager.getCurrentAccessToken()}`
@@ -103,7 +101,6 @@ export const ApplicationService = {
     }, login: async function (username, password) {
         return JwtManager.login(username, password);
     }, register: async function (username, password) {
-        await sleep(1000); // TODO: remove it
         return fetch(`${BASE_URL}/user/save`, {
             method: 'POST', headers: {
                 'Content-Type': 'application/json'

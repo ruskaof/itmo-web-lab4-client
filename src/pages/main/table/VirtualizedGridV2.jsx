@@ -34,7 +34,6 @@ function VirtualizedGridV2(props) {
     const itemCount = hasMore ? attempts.length + 1 : attempts.length;
 
     const loadMoreItems = isNextPageLoading ? () => {
-        console.log("loadMoreItems is already loading")
     } : loadNextPage;
 
     const isItemLoaded = (index) => {
@@ -42,14 +41,12 @@ function VirtualizedGridV2(props) {
     }
 
     function loadNextPage() {
-        console.log("Start loading next page");
         setIsNextPageLoading(true);
         return ApplicationService.getAttemptsWithOffset(attempts.length, pageSize, {
             searchId, searchX, searchY, searchR, searchResult, searchTime, searchProcessingTime
         })
             .then(response => response.json())
             .then(data => {
-                console.log("Loaded next page, got " + data.attempts.length + " attempts");
                 setAttempts(attempts.concat(data.attempts));
                 setHasMore(data.has_more);
                 setIsNextPageLoading(false);
@@ -61,8 +58,6 @@ function VirtualizedGridV2(props) {
         setHasMore(true);
         if (hasMountedRef.current) {
             if (infiniteLoaderRef.current) {
-                console.log("Search params changed, reloading attempts");
-                console.log("Resetting infinite loader");
 
                 infiniteLoaderRef.current.resetloadMoreItemsCache(false);
                 loadNextPage()
@@ -70,7 +65,6 @@ function VirtualizedGridV2(props) {
         }
         hasMountedRef.current = true;
 
-        console.log("isnextpageloading: " + isNextPageLoading + ", hasmore: " + hasMore);
     }, [searchId, searchX, searchY, searchR, searchResult, searchTime, searchProcessingTime])
 
     const Item = ({index, style}) => {
