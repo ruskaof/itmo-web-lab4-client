@@ -35,7 +35,9 @@ import {
     SET_TABLE_SEARCH_PROCESSING_TIME,
     SET_TABLE_ATTEMPTS_LIST,
     SET_TABLE_HAS_MORE,
+    SET_LOGGINED_IN,
 } from "./actions.js";
+import {JwtManager} from "../../service/JwtManager.js";
 
 const initialState = {
     loading: false,
@@ -54,7 +56,7 @@ const initialState = {
     registerFormPasswordRepeat: '',
     registerFormErrorMessage: '',
     registerFormSuccessMessage: '',
-    loggedIn: false,
+    loggedIn: JwtManager.userIsLoggedIn(), // Initial value is set due to the data in the local storage
     authFormIsLoading: false,
     tableSearchId: '',
     tableSearchX: '',
@@ -77,7 +79,8 @@ export const reducer = (state = initialState, action) => {
             return {
                 ...state, errorMessage: action.payload,
             }
-        case FETCH_ADD_ATTEMPT_REQUEST:;
+        case FETCH_ADD_ATTEMPT_REQUEST:
+
             return {
                 ...state, loading: true,
             }
@@ -174,11 +177,17 @@ export const reducer = (state = initialState, action) => {
             }
         case FETCH_REGISTER_SUCCESS:
             return {
-                ...state, authFormIsLoading: false
+                ...state,
+                authFormIsLoading: false,
+                registerFormSuccessMessage: 'The user has been successfully registered',
+                registerFormErrorMessage: ''
             }
         case FETCH_REGISTER_FAILURE:
             return {
-                ...state, authFormIsLoading: false, registerFormErrorMessage: action.payload,
+                ...state,
+                authFormIsLoading: false,
+                registerFormErrorMessage: action.payload,
+                registerFormSuccessMessage: ''
             }
         case SET_TABLE_SEARCH_ID:
             return {
@@ -215,6 +224,10 @@ export const reducer = (state = initialState, action) => {
         case SET_TABLE_HAS_MORE:
             return {
                 ...state, tableHasMore: action.payload,
+            }
+        case SET_LOGGINED_IN:
+            return {
+                ...state, loggedIn: action.payload,
             }
 
 

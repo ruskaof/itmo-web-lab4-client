@@ -13,7 +13,7 @@ export function Buttons({
     return (<Box sx={{
         display: 'flex',
         flexDirection: 'row',
-        width: '400px',
+        width: '350px',
         justifyContent: 'center',
         gap: '10px',
         paddingBottom: '10px'

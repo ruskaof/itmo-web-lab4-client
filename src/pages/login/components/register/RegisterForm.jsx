@@ -4,12 +4,13 @@ import LoginFormButtons from "./RegisterFormButtons.jsx";
 import {connect} from "react-redux";
 import {Alert} from "@mui/material";
 
-function RegisterForm({errorMessage}) {
+function RegisterForm({errorMessage, successMessage}) {
     return (
         <div>
             <LoginFormFields/>
             <LoginFormButtons/>
             {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+            {successMessage && <Alert severity="success">{successMessage}</Alert>}
         </div>
     )
 }
@@ -17,6 +18,7 @@ function RegisterForm({errorMessage}) {
 function mapStateToRegisterFormFieldsProps(state) {
     return {
         errorMessage: state.registerFormErrorMessage,
+        successMessage: state.registerFormSuccessMessage
     }
 }
 

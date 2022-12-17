@@ -12,12 +12,12 @@ import {
 import {connect} from "react-redux";
 import VirtualizedGridV2 from "./VirtualizedGridV2.jsx";
 
-const tableWidth = 1200;
+const tableWidth = 1000 ;
 
 function Table(props) {
     return (<div style={{overflow: "auto", width: {tableWidth}}}>
         <GridHeader width={tableWidth} {...props}/>
-        <VirtualizedGridV2/>
+        <VirtualizedGridV2 width={tableWidth}/>
     </div>)
 }
 

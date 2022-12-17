@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {connect} from "react-redux";
-import {fetchAddAttempt, fetchAttemptsWithOffset} from "../../redux/attempts/actions.js";
+import {fetchAddAttempt, fetchAttemptsWithOffset} from "../../../redux/attempts/actions.js";
 
 function getCssColor(name) {
     return window
@@ -23,7 +23,7 @@ function Graph(props) {
     }, [fieldData]);
 
     return (<div className="gradient-animation-box">
-        <canvas id="graph" width="390" height="390" ref={canvasRef} className="gradient-animation-box__graph"/>
+        <canvas id="graph" width="340" height="340" ref={canvasRef} className="gradient-animation-box__graph"/>
     </div>)
 }
 

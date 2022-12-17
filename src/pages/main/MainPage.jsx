@@ -2,39 +2,37 @@
 
 import React from 'react';
 import {Box, useMediaQuery} from "@mui/material";
-import Graph from "./Graph.jsx";
+import Graph from "./graph/Graph.jsx";
 import Form from "./form/Form.jsx";
 import Table from "./table/Table.jsx";
 import {connect} from "react-redux";
 import {Navigate} from 'react-router-dom';
-
-function useIsMobile() {
-    return useMediaQuery('(min-width: 1000px)')
-}
+import {useIsMobile} from "../../utility/useIsMobile.js";
 
 
 function MainPage({loggedIn}) {
-
     if (!loggedIn) {
-        return <Navigate to="/login" />
+        return <Navigate to="/login"/>
     }
-    return (
-        <div>
-            <Box sx={{marginLeft: '20px'}}>
-                <div style={useIsMobile()? {
+    return (<div>
+        <Box sx={{marginLeft: '20px'}}>
+            <div style={useIsMobile() ? {} : {
+                display: 'flex', flexDirection: 'row', gap: '20px', justifyContent: 'center', alignItems: 'center'
+            }}>
+                <Box sx={useIsMobile() ? {
                     display: 'flex',
-                    flexDirection: 'row',
-                    gap: '20px',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '100%',
                 } : {}}>
-                    <div>
-                        <Graph/>
-                        <Form/>
-                    </div>
-                    <Table/>
-                </div>
-            </Box>
-        </div>
-    );
+                    <Graph/>
+                    <Form/>
+                </Box>
+                <Table/>
+            </div>
+        </Box>
+    </div>);
 }
 
 function mapStateToMainPageProps(state) {

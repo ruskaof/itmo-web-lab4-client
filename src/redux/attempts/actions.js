@@ -208,14 +208,14 @@ export const setLoginFormPassword = (password) => {
     }
 }
 
-// export const SET_LOGGINED_IN = 'SET_LOGGINED_IN';
-//
-// export const setLogginedIn = (logginedIn) => {
-//     return {
-//         type: SET_LOGGINED_IN,
-//         payload: logginedIn,
-//     }
-// }
+export const SET_LOGGINED_IN = 'SET_LOGGINED_IN';
+
+export const setLogginedIn = (logginedIn) => {
+    return {
+        type: SET_LOGGINED_IN,
+        payload: logginedIn,
+    }
+}
 
 export const FETCH_LOGIN_REQUEST = 'FETCH_LOGIN_REQUEST';
 export const FETCH_LOGIN_SUCCESS = 'FETCH_LOGIN_SUCCESS';

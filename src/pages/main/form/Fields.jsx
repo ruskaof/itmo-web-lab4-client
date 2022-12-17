@@ -24,7 +24,7 @@ export function Fields({currentEnteredX, currentEnteredY, currentEnteredR, setX,
     return (
         <Box
             sx={{
-                display: 'flex', flexDirection: 'column', width: '400px', gap: '10px', marginBottom: '10px',
+                display: 'flex', flexDirection: 'column', width: '350px', gap: '10px', marginBottom: '10px',
             }}
         >
             <TextField id="x" name="x" label="X" variant="outlined" value={currentEnteredX} onChange={handleChange}/>

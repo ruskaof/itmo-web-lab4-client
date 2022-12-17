@@ -1,8 +1,8 @@
-@import "src/style/constants";
+@import "../../../style/constants";
 
 .datagrid {
     display: grid;
-    grid-template-columns: 1fr 2fr 2fr 2fr 1fr 4fr 1fr;
+    grid-template-columns: 1fr 2fr 2fr 2fr 1fr 2fr 1fr;
     justify-items: left;
     align-items: center;
     grid-column-gap: 10px;

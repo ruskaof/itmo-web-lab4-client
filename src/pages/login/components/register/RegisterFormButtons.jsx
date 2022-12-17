@@ -33,7 +33,7 @@ function mapDispatchToLoginFormButtonsProps(dispatch) {
     return {
         register: (username, password) => {
             dispatch(fetchRegister(username, password))
-        }
+        },
     }
 }
 

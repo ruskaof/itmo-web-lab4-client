@@ -5,6 +5,7 @@ import {useEffect} from "react";
 import {ApplicationService} from "../../../service/ApplicationService.js";
 import {connect} from "react-redux";
 import {setTableAttemptsList, setTableHasMore} from "../../../redux/attempts/actions.js";
+import {Box, LinearProgress} from "@mui/material";
 
 const pageSize = 25;
 
@@ -26,7 +27,6 @@ function VirtualizedGridV2(props) {
 
     const infiniteLoaderRef = useRef(null);
     const hasMountedRef = useRef(false);
-
 
 
     const [isNextPageLoading, setIsNextPageLoading] = React.useState(false);
@@ -69,7 +69,11 @@ function VirtualizedGridV2(props) {
 
     const Item = ({index, style}) => {
         if (!isItemLoaded(index)) {
-            return <div style={style}>Loading...</div>;
+            return <Box sx={style} display="flex" justifyContent="center" alignItems="center">
+                <div style={{width: "100%"}}>
+                    <LinearProgress/>
+                </div>
+            </Box>
         } else {
             const item = attempts[index];
             return <div style={style} className="datagrid">
@@ -90,7 +94,7 @@ function VirtualizedGridV2(props) {
                         className={item.result ? "datagrid__cell-hit" : "datagrid__cell-miss"}>{item.result ? "hit" : "miss"}</div>
                 </div>
                 <div className="datagrid__row-item">
-                    <div className="datagrid__cell">{item.attemptTime}</div>
+                    <div className="datagrid__cell">{item.attemptTime.replace("T", " ")}</div>
                 </div>
                 <div className="datagrid__row-item">
                     <div className="datagrid__cell">{item.processingTimeNanos}</div>

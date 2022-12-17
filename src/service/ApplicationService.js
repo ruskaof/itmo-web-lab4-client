@@ -11,14 +11,9 @@ export const ApplicationService = {
             }, body: body
         })
             .then(response => {
-                if (response.status === 403) {
-                    return JwtManager.refreshAccessToken()
-                        .then(() => {
-                            return this.addAttempt(attempt);
-                        })
-                } else {
-                    return response
-                }
+                return refreshHandler(response, () => {
+                    return ApplicationService.addAttempt(attempt);
+                })
             })
 
 
@@ -29,17 +24,13 @@ export const ApplicationService = {
             }
         })
             .then(response => {
-                if (response.status === 403) {
-                    return JwtManager.refreshAccessToken()
-                        .then(() => {
-                            return this.removeAllAttempts();
-                        })
-                } else {
-                    return response
-                }
+                return refreshHandler(response, () => {
+                    return ApplicationService.removeAllAttempts();
+                })
             })
     }, getAttemptsWithOffset: async function (offset, count, searchParams) {
         // Add search params only if they are not undefined
+        await sleep(1000);
         let url = `${BASE_URL}/get_with_offset?offset=${offset}&size=${count}`;
         if (searchParams !== undefined) {
             if (searchParams.searchId) {
@@ -60,24 +51,21 @@ export const ApplicationService = {
             if (searchParams.searchTime) {
                 url += `&time=${searchParams.searchTime}`;
             }
-            if (searchParams.searchProcessTime) {
-                url += `&processingTime=${searchParams.searchProcessTime}`;
+            if (searchParams.searchProcessingTime) {
+                url += `&processingTime=${searchParams.searchProcessingTime}`;
             }
         }
+        console.log(url);
+        console.log(searchParams);
         return fetch(url, {
             method: 'GET', headers: {
                 'Authorization': `Bearer ${JwtManager.getCurrentAccessToken()}`
             }
         })
             .then(response => {
-                if (response.status === 403) {
-                    return JwtManager.refreshAccessToken()
-                        .then(() => {
-                            return this.getAttemptsWithOffset(offset, count);
-                        })
-                } else {
-                    return response
-                }
+                return refreshHandler(response, () => {
+                    return ApplicationService.getAttemptsWithOffset(offset, count, searchParams);
+                })
             })
 
 
@@ -88,14 +76,9 @@ export const ApplicationService = {
             }
         })
             .then(response => {
-                if (response.status === 403) {
-                    return JwtManager.refreshAccessToken()
-                        .then(() => {
-                            return this.getRowsCount();
-                        })
-                } else {
-                    return response
-                }
+                return refreshHandler(response, () => {
+                    return ApplicationService.getRowsCount();
+                })
             })
 
     }, login: async function (username, password) {
@@ -117,6 +100,29 @@ export const ApplicationService = {
                 }
             })
 
+    }
+}
+
+/**
+ * This function is used to handle 403 response status.
+ * If the response status is 403, it means that the access token has expired.
+ * In this case, we need to refresh the access token and repeat the request.
+ * @param response
+ * @param func
+ * @returns {*|Promise<*>}
+ */
+function refreshHandler(response, func) {
+    if (response.status === 403) {
+        return JwtManager.refreshAccessToken()
+            .then(() => {
+                return func();
+            }, () => {
+                // The promise was rejected, so the refresh token has expired or is invalid
+                // We need to log out the user to prevent further errors
+                JwtManager.logout();
+            })
+    } else {
+        return response
     }
 }
 

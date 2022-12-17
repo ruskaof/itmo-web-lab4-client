@@ -1,7 +1,7 @@
 @import "constants.scss";
-@import "header.scss";
-@import "src/pages/main/style/datagrid";
-@import "src/pages/main/style/graph";
+@import "../components/header/header";
+@import "../pages/main/table/datagrid";
+@import "../pages/main/graph/graph";
 
 * {
   margin: 0;
