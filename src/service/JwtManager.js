@@ -1,10 +1,9 @@
-import {BASE_URL} from "./ApplicationService.js";
-import {store} from "../redux/attempts/store.js";
-import {setLogginedIn} from "../redux/attempts/actions.js";
+import { BASE_URL } from "./ApplicationService.js";
+import { store } from "../redux/attempts/store.js";
+import { setLogginedIn } from "../redux/attempts/actions.js";
 
 /**
  * This object is responsible for managing JWT tokens and user authentication.
- * @type {{refreshAccessToken(): (Promise<never>), getCurrentAccessToken(): string, logout(): void, login(*, *): Promise<*>, userIsLoggedIn(): boolean}}
  */
 export const JwtManager = {
     /**
@@ -14,13 +13,15 @@ export const JwtManager = {
      * @returns {Promise<any>}
      */
     login(username, password) {
-        const body = JSON.stringify({'username': username, 'password': password});
-        return fetch(`${BASE_URL}/login`, {
-            method: 'POST', headers: {
-                'Content-Type': 'application/json',
-            }, body: body
+        const body = JSON.stringify({ username: username, password: password });
+        return fetch(`${BASE_URL}/auth/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: body,
         })
-            .then(response => {
+            .then((response) => {
                 if (response.status === 200) {
                     return response.json();
                 } else if (response.status === 401) {
@@ -29,59 +30,63 @@ export const JwtManager = {
                     return Promise.reject("Invalid username or password");
                 }
             })
-            .then(data => {
-                localStorage.setItem('access_token', data.access_token);
-                localStorage.setItem('refresh_token', data.refresh_token);
-                localStorage.setItem('username', username);
+            .then((data) => {
+                localStorage.setItem("access_token", data.access_token);
+                localStorage.setItem("refresh_token", data.refresh_token);
+                localStorage.setItem("username", username);
                 return true;
             })
-            .catch(error => {
+            .catch((error) => {
                 console.log(error);
                 return false;
-            })
-    }, /**
+            });
+    },
+    /**
      * Used to refresh the access token
      * @returns new access token or null if there was an error
-     */
-    refreshAccessToken() {
-        const refresh_token = localStorage.getItem('refresh_token');
+     */ refreshAccessToken() {
+        const refresh_token = localStorage.getItem("refresh_token");
         if (refresh_token === null) {
             return Promise.reject("No refresh token");
         }
-        return fetch(`${BASE_URL}/user/token/refresh`, {
-            method: 'GET', headers: {
-                'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('refresh_token')}`
-            }
+        return fetch(`${BASE_URL}/auth/refresh`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ refresh_token: refresh_token }),
         })
-            .then(response => {
+            .then((response) => {
                 if (response.status === 200) {
                     return response.json();
                 } else {
                     throw new Error("Failed to refresh access token");
                 }
             })
-            .then(response => response.json())
-            .then(data => {
-                localStorage.setItem('access_token', data.access_token);
+            .then((data) => {
+                localStorage.setItem("access_token", data.access_token);
                 return data;
             })
-            .catch(error => {
+            .catch((error) => {
                 console.log(error);
                 return Promise.reject(error);
-            })
-
-    }, getCurrentAccessToken() {
-        return localStorage.getItem('access_token');
-    }, userIsLoggedIn() {
-        return localStorage.getItem('username') !== null;
-    }, /**
+            });
+    },
+    getCurrentAccessToken() {
+        console.log("JwtManager.getCurrentAccessToken()");
+        console.log(localStorage.getItem("access_token"));
+        return localStorage.getItem("access_token");
+    },
+    userIsLoggedIn() {
+        return localStorage.getItem("username") !== null;
+    },
+    /**
      * Used to remove all tokens from the local storage and logout the user from the application
-     */
-    logout() {
+     */ logout() {
         console.log("JwtManager.logout()");
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-        localStorage.removeItem('username');
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        localStorage.removeItem("username");
         store.dispatch(setLogginedIn(false));
-    }
-}
+    },
+};
