@@ -32,12 +32,14 @@ function MainPage({loggedIn}) {
                 <Table/>
             </div>
         </Box>
+
+
     </div>);
 }
 
 function mapStateToMainPageProps(state) {
     return {
-        loggedIn: state.loggedIn
+        loggedIn: state.loggedIn,
     }
 }
 

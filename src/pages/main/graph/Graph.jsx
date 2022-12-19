@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {connect} from "react-redux";
-import {fetchAddAttempt, fetchAttemptsWithOffset} from "../../../redux/attempts/actions.js";
+import {fetchAddAttempt, fetchAttemptsWithOffset, setFormError} from "../../../redux/attempts/actions.js";
 
 function getCssColor(name) {
     return window
@@ -9,13 +9,13 @@ function getCssColor(name) {
 }
 
 function Graph(props) {
+    console.log("Graph rerendered");
     const {attempts, r, addAttempt, ...fieldData} = props;
     const canvasRef = React.useRef(null);
     useEffect(() => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
-        drawCanvasGraph(canvas, ctx, props.attempts, props.r, props.addAttempt);
-
+        drawCanvasGraph(canvas, ctx, props.attempts, props.r, props.addAttempt, props.setFormError);
     });
 
     useEffect(() => {
@@ -23,7 +23,12 @@ function Graph(props) {
     }, [fieldData]);
 
     return (<div className="gradient-animation-box">
-        <canvas id="graph" width="340" height="340" ref={canvasRef} className="gradient-animation-box__graph"/>
+        <canvas id="graph"
+                width="340"
+                height="340"
+                ref={canvasRef}
+                className="gradient-animation-box__graph"
+        />
     </div>)
 }
 
@@ -34,8 +39,10 @@ function Graph(props) {
  * @param ctx
  * @param dotsList
  * @param userSelectedR
+ * @param addAttempt
+ * @param errorSetter
  */
-function drawCanvasGraph(canvas, ctx, dotsList, userSelectedR, addAttempt) {
+function drawCanvasGraph(canvas, ctx, dotsList, userSelectedR, addAttempt, errorSetter) {
     /* Init graph parameters */
     const markLen = 20
     const arrowDifference = 20
@@ -228,17 +235,21 @@ function drawCanvasGraph(canvas, ctx, dotsList, userSelectedR, addAttempt) {
 
     canvas.onmousedown = function (event) {
 
-        const x = convertXToRadiusOf(event.offsetX, userSelectedR);
-        const y = convertYToRadiusOf(event.offsetY, userSelectedR);
+        if (userSelectedR <= 0 || isNaN(userSelectedR)) {
+            errorSetter("Please, select R value");
+        } else {
+            const x = convertXToRadiusOf(event.offsetX, userSelectedR);
+            const y = convertYToRadiusOf(event.offsetY, userSelectedR);
 
-        addAttempt({x: x, y: y, r: userSelectedR});
+            addAttempt({x: x, y: y, r: userSelectedR});
+        }
     };
 }
 
 function mapDispatchToGraphProps(dispatch) {
     return {
         addAttempt: (attempt) => dispatch(fetchAddAttempt(attempt)),
-        fetchAttemptsWithOffset: (offset, limit) => dispatch(fetchAttemptsWithOffset(offset, limit)),
+        setFormError: (error) => dispatch(setFormError(error))
     }
 }
 

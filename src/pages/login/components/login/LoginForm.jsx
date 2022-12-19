@@ -2,15 +2,25 @@ import React from "react";
 import LoginFormFields from "./LoginFormFields.jsx";
 import LoginFormButtons from "./LoginFormButtons.jsx";
 import {connect} from "react-redux";
-import {Alert} from "@mui/material";
+import {Alert, Snackbar} from "@mui/material";
 import {Navigate} from "react-router-dom";
+import {setLoginFormError} from "../../../../redux/attempts/actions.js";
 
-function LoginForm({errorMessage, loggedIn}) {
+function LoginForm({errorMessage, loggedIn, setErrorMessage}) {
     return (
-        <div>
+        <div style={{
+            width: '100%',
+            height: '100%',
+        }}>
             <LoginFormFields/>
             <LoginFormButtons/>
-            {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+            <Snackbar open={!!errorMessage} autoHideDuration={3000} onClose={() => {
+                setErrorMessage('')
+            }}>
+                <Alert onClose={() => setErrorMessage("")} severity="error" sx={{width: '100%'}}>
+                    {errorMessage}
+                </Alert>
+            </Snackbar>
             {loggedIn &&  <Navigate to="/"/>}
         </div>
     )
@@ -23,4 +33,12 @@ function mapStateToLoginFormFieldsProps(state) {
     }
 }
 
-export default connect(mapStateToLoginFormFieldsProps)(LoginForm)
+function mapDispatchToLoginFormFieldsProps(dispatch) {
+    return {
+        setErrorMessage: (errorMessage) => {
+            dispatch(setLoginFormError(errorMessage))
+        }
+    }
+}
+
+export default connect(mapStateToLoginFormFieldsProps, mapDispatchToLoginFormFieldsProps)(LoginForm)

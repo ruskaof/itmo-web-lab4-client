@@ -6,6 +6,11 @@
     justify-items: left;
     align-items: center;
     grid-column-gap: 10px;
+    border-bottom: 1px solid var(--borders-color);
+
+    &:last-child {
+        border-bottom: none;
+    }
 }
 
 .attempt-status {
@@ -14,15 +19,17 @@
     text-align: center;
 }
 
+
 .datagrid__cell-hit {
     @extend .attempt-status;
     background-color: var(--hit-dot-color);
-
+    color: var(--primary-background)
 }
 
 .datagrid__cell-miss {
     @extend .attempt-status;
     background-color: var(--miss-dot-color);
+    color: var(--primary-background)
 }
 
 .table {

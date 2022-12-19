@@ -35,7 +35,7 @@ import {
     SET_TABLE_SEARCH_PROCESSING_TIME,
     SET_TABLE_ATTEMPTS_LIST,
     SET_TABLE_HAS_MORE,
-    SET_LOGGINED_IN,
+    SET_LOGGINED_IN, SET_REGISTER_FORM_ERROR, SET_LOGIN_FORM_ERROR, SET_REGISTER_FORM_SUCCESS_MESSAGE,
 } from "./actions.js";
 import {JwtManager} from "../../service/JwtManager.js";
 
@@ -124,6 +124,7 @@ export const reducer = (state = initialState, action) => {
                 ...state, currentEnteredR: action.payload,
             }
         case SET_FORM_ERROR:
+            console.log("SET_FORM_ERROR: " + action.payload)
             return {
                 ...state, formErrorMessage: action.payload,
             }
@@ -229,6 +230,21 @@ export const reducer = (state = initialState, action) => {
             return {
                 ...state, loggedIn: action.payload,
             }
+        case SET_REGISTER_FORM_ERROR: {
+            return {
+                ...state, registerFormErrorMessage: action.payload,
+            }
+        }
+        case SET_LOGIN_FORM_ERROR: {
+            return {
+                ...state, loginFormErrorMessage: action.payload,
+            }
+        }
+        case SET_REGISTER_FORM_SUCCESS_MESSAGE: {
+            return {
+                ...state, registerFormSuccessMessage: action.payload,
+            }
+        }
 
 
         default:

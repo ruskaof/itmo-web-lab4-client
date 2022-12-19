@@ -28,15 +28,13 @@ const fetchAddAttemptRequest = () => {
 
 const fetchAddAttemptSuccess = attempt => {
     return {
-        type: FETCH_ADD_ATTEMPT_SUCCESS,
-        payload: attempt,
+        type: FETCH_ADD_ATTEMPT_SUCCESS, payload: attempt,
     }
 }
 
 const fetchAddAttemptFailure = errorMessage => {
     return {
-        type: FETCH_ADD_ATTEMPT_FAILURE,
-        payload: errorMessage,
+        type: FETCH_ADD_ATTEMPT_FAILURE, payload: errorMessage,
     }
 }
 
@@ -71,8 +69,7 @@ const fetchDeleteAllAttemptsSuccess = () => {
 
 const fetchDeleteAllAttemptsFailure = errorMessage => {
     return {
-        type: FETCH_DELETE_ALL_ATTEMPTS_FAILURE,
-        payload: errorMessage,
+        type: FETCH_DELETE_ALL_ATTEMPTS_FAILURE, payload: errorMessage,
     }
 }
 
@@ -102,15 +99,13 @@ const fetchAttemptsWithOffsetRequest = () => {
 
 const fetchAttemptsWithOffsetSuccess = data => {
     return {
-        type: FETCH_ATTEMPTS_WITH_OFFSET_SUCCESS,
-        payload: data,
+        type: FETCH_ATTEMPTS_WITH_OFFSET_SUCCESS, payload: data,
     }
 }
 
 const fetchAttemptsWithOffsetFailure = errorMessage => {
     return {
-        type: FETCH_ATTEMPTS_WITH_OFFSET_FAILURE,
-        payload: errorMessage,
+        type: FETCH_ATTEMPTS_WITH_OFFSET_FAILURE, payload: errorMessage,
     }
 }
 
@@ -119,8 +114,7 @@ export const SET_X = 'SET_X';
 
 export const setX = (x) => {
     return {
-        type: SET_X,
-        payload: x,
+        type: SET_X, payload: x,
     }
 }
 
@@ -128,8 +122,7 @@ export const SET_Y = 'SET_Y';
 
 export const setY = (y) => {
     return {
-        type: SET_Y,
-        payload: y,
+        type: SET_Y, payload: y,
     }
 }
 
@@ -137,17 +130,16 @@ export const SET_R = 'SET_R';
 
 export const setR = (r) => {
     return {
-        type: SET_R,
-        payload: r,
+        type: SET_R, payload: r,
     }
 }
 
 export const SET_FORM_ERROR = 'SET_FORM_ERROR';
 
 export const setFormError = (message) => {
-return {
-        type: SET_FORM_ERROR,
-        payload: message,
+    console.log("setFormError");
+    return {
+        type: SET_FORM_ERROR, payload: message,
     }
 }
 
@@ -177,15 +169,13 @@ const getRowsCountRequest = () => {
 
 const getRowsCountSuccess = count => {
     return {
-        type: GET_ROWS_COUNT_SUCCESS,
-        payload: count,
+        type: GET_ROWS_COUNT_SUCCESS, payload: count,
     }
 }
 
 const getRowsCountFailure = errorMessage => {
     return {
-        type: GET_ROWS_COUNT_FAILURE,
-        payload: errorMessage,
+        type: GET_ROWS_COUNT_FAILURE, payload: errorMessage,
     }
 }
 
@@ -196,15 +186,13 @@ export const SET_LOGIN_FORM_PASSWORD = 'SET_LOGIN_FORM_PASSWORD';
 
 export const setLoginFormUsername = (username) => {
     return {
-        type: SET_LOGIN_FORM_USERNAME,
-        payload: username,
+        type: SET_LOGIN_FORM_USERNAME, payload: username,
     }
 }
 
 export const setLoginFormPassword = (password) => {
     return {
-        type: SET_LOGIN_FORM_PASSWORD,
-        payload: password,
+        type: SET_LOGIN_FORM_PASSWORD, payload: password,
     }
 }
 
@@ -212,8 +200,7 @@ export const SET_LOGGINED_IN = 'SET_LOGGINED_IN';
 
 export const setLogginedIn = (logginedIn) => {
     return {
-        type: SET_LOGGINED_IN,
-        payload: logginedIn,
+        type: SET_LOGGINED_IN, payload: logginedIn,
     }
 }
 
@@ -252,8 +239,7 @@ const fetchLoginSuccess = () => {
 
 const fetchLoginFailure = errorMessage => {
     return {
-        type: FETCH_LOGIN_FAILURE,
-        payload: errorMessage,
+        type: FETCH_LOGIN_FAILURE, payload: errorMessage,
     }
 }
 
@@ -263,22 +249,19 @@ export const SET_REGISTER_FORM_USERNAME = 'SET_REGISTER_FORM_USERNAME';
 
 export const setRegisterFormPassword = (password) => {
     return {
-        type: SET_REGISTER_FORM_PASSWORD,
-        payload: password,
+        type: SET_REGISTER_FORM_PASSWORD, payload: password,
     }
 }
 
 export const setRegisterFormPasswordRepeat = (passwordRepeat) => {
     return {
-        type: SET_REGISTER_FORM_PASSWORD_REPEAT,
-        payload: passwordRepeat,
+        type: SET_REGISTER_FORM_PASSWORD_REPEAT, payload: passwordRepeat,
     }
 }
 
 export const setRegisterFormUsername = (username) => {
     return {
-        type: SET_REGISTER_FORM_USERNAME,
-        payload: username,
+        type: SET_REGISTER_FORM_USERNAME, payload: username,
     }
 }
 
@@ -287,7 +270,7 @@ export const FETCH_REGISTER_SUCCESS = 'FETCH_REGISTER_SUCCESS';
 export const FETCH_REGISTER_FAILURE = 'FETCH_REGISTER_FAILURE';
 
 export const fetchRegister = (username, password) => {
-return function (dispatch) {
+    return function (dispatch) {
         dispatch(fetchRegisterRequest());
         ApplicationService.register(username, password)
             .then((result) => {
@@ -317,8 +300,7 @@ const fetchRegisterSuccess = () => {
 
 const fetchRegisterFailure = errorMessage => {
     return {
-        type: FETCH_REGISTER_FAILURE,
-        payload: errorMessage,
+        type: FETCH_REGISTER_FAILURE, payload: errorMessage,
     }
 }
 
@@ -363,7 +345,7 @@ export const FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_SUCCESS = 'FETCH_ATTEMPTS_WITH_OF
 export const FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_FAILURE = 'FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_FAILURE';
 
 export const fetchAttemptsWithOffsetSearch = (offset, count, searchParams) => {
-return function (dispatch) {
+    return function (dispatch) {
         dispatch(fetchAttemptsWithOffsetSearchRequest());
         ApplicationService.getAttemptsWithOffset(offset, count, searchParams)
             .then((result) => {
@@ -383,15 +365,13 @@ const fetchAttemptsWithOffsetSearchRequest = () => {
 
 const fetchAttemptsWithOffsetSearchSuccess = (result) => {
     return {
-        type: FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_SUCCESS,
-        payload: result,
+        type: FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_SUCCESS, payload: result,
     }
 }
 
 const fetchAttemptsWithOffsetSearchFailure = errorMessage => {
     return {
-        type: FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_FAILURE,
-        payload: errorMessage,
+        type: FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_FAILURE, payload: errorMessage,
     }
 }
 
@@ -399,8 +379,7 @@ export const SET_TABLE_ATTEMPTS_LIST = 'SET_TABLE_ATTEMPTS_LIST';
 
 export const setTableAttemptsList = (attemptsList) => {
     return {
-        type: SET_TABLE_ATTEMPTS_LIST,
-        payload: attemptsList,
+        type: SET_TABLE_ATTEMPTS_LIST, payload: attemptsList,
     }
 }
 
@@ -408,7 +387,30 @@ export const SET_TABLE_HAS_MORE = 'SET_TABLE_HAS_MORE';
 
 export const setTableHasMore = (hasNext) => {
     return {
-        type: SET_TABLE_HAS_MORE,
-        payload: hasNext,
+        type: SET_TABLE_HAS_MORE, payload: hasNext,
+    }
+}
+
+export const SET_REGISTER_FORM_ERROR = 'SET_REGISTER_FORM_ERROR';
+
+export const setRegisterFormError = (errorMessage) => {
+    return {
+        type: SET_REGISTER_FORM_ERROR, payload: errorMessage,
+    }
+}
+
+export const SET_LOGIN_FORM_ERROR = 'SET_LOGIN_FORM_ERROR';
+
+export const setLoginFormError = (errorMessage) => {
+    return {
+        type: SET_LOGIN_FORM_ERROR, payload: errorMessage,
+    }
+}
+
+export const SET_REGISTER_FORM_SUCCESS_MESSAGE = 'SET_REGISTER_FORM_SUCCESS_MESSAGE';
+
+export const setRegisterFormSuccessMessage = (successMessage) => {
+    return {
+        type: SET_REGISTER_FORM_SUCCESS_MESSAGE, payload: successMessage,
     }
 }

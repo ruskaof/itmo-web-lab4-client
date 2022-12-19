@@ -1,25 +1,46 @@
 import React from "react";
-import LoginFormFields from "./RegisterFormFields.jsx";
-import LoginFormButtons from "./RegisterFormButtons.jsx";
+import RegisterFormFields from "./RegisterFormFields.jsx";
+import RegisterFormButtons from "./RegisterFormButtons.jsx";
 import {connect} from "react-redux";
-import {Alert} from "@mui/material";
+import {Alert, Snackbar} from "@mui/material";
+import {setRegisterFormError, setRegisterFormSuccessMessage} from "../../../../redux/attempts/actions.js";
 
-function RegisterForm({errorMessage, successMessage}) {
-    return (
-        <div>
-            <LoginFormFields/>
-            <LoginFormButtons/>
-            {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
-            {successMessage && <Alert severity="success">{successMessage}</Alert>}
-        </div>
-    )
+function RegisterForm({errorMessage, successMessage, setErrorMessage, setSuccessMessage}) {
+    console.log("rendering register form: ", errorMessage, successMessage)
+    return (<div style={{
+        width: '100%', height: '100%',
+    }}>
+        <RegisterFormFields/>
+        <RegisterFormButtons/>
+        <Snackbar open={!!successMessage} autoHideDuration={6000} onClose={() => setSuccessMessage("")}>
+            <Alert onClose={() => setSuccessMessage("")} severity="success" sx={{width: '100%'}}>
+                {successMessage}
+            </Alert>
+        </Snackbar>
+        <Snackbar open={!!errorMessage} autoHideDuration={3000} onClose={() => {
+            setErrorMessage('')
+        }}>
+            <Alert onClose={() => setErrorMessage("")} severity="error" sx={{width: '100%'}}>
+                {errorMessage}
+            </Alert>
+        </Snackbar>
+    </div>)
 }
 
 function mapStateToRegisterFormFieldsProps(state) {
     return {
-        errorMessage: state.registerFormErrorMessage,
-        successMessage: state.registerFormSuccessMessage
+        errorMessage: state.registerFormErrorMessage, successMessage: state.registerFormSuccessMessage
     }
 }
 
-export default connect(mapStateToRegisterFormFieldsProps)(RegisterForm)
+function mapDispatchToRegisterFormFieldsProps(dispatch) {
+    return {
+        setErrorMessage: (errorMessage) => {
+            dispatch(setRegisterFormError(errorMessage))
+        }, setSuccessMessage: (successMessage) => {
+            dispatch(setRegisterFormSuccessMessage(successMessage))
+        }
+    }
+}
+
+export default connect(mapStateToRegisterFormFieldsProps, mapDispatchToRegisterFormFieldsProps)(RegisterForm)

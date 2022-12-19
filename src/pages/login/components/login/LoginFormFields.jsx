@@ -26,7 +26,11 @@ function LoginFormFields({username, password, setUsername, setPassword}) {
     }
 
     return (<Box sx={{
-        display: 'flex', flexDirection: 'column', width: '400px', gap: '10px', marginBottom: '10px',
+        display: 'flex',
+        flexDirection: 'column',
+        width: "100%",
+        gap: '10px',
+        marginBottom: '10px',
     }}>
             <TextField variant="outlined" name="username" value={username} label="Username" onChange={handleChange}/>
             <TextField variant="outlined" name="password" value={password} label="Password" type="password"
