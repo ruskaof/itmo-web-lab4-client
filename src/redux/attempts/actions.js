@@ -137,7 +137,6 @@ export const setR = (r) => {
 export const SET_FORM_ERROR = 'SET_FORM_ERROR';
 
 export const setFormError = (message) => {
-    console.log("setFormError");
     return {
         type: SET_FORM_ERROR, payload: message,
     }

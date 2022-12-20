@@ -17,7 +17,6 @@ function Header({isLoggedIn}) {
             <h2 className="header__text2" style={additionalStyle}>P32302, var 9876451</h2>
         </div>
         {isLoggedIn && <Button variant="contained" onClick={() => {
-            console.log("logout")
             JwtManager.logout()
         }} sx={{width: '100px'}}>Log out</Button>}
 

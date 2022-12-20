@@ -9,7 +9,6 @@ function getCssColor(name) {
 }
 
 function Graph(props) {
-    console.log("Graph rerendered");
     const {attempts, r, addAttempt, ...fieldData} = props;
     const canvasRef = React.useRef(null);
     useEffect(() => {
@@ -236,7 +235,7 @@ function drawCanvasGraph(canvas, ctx, dotsList, userSelectedR, addAttempt, error
     canvas.onmousedown = function (event) {
 
         if (userSelectedR <= 0 || isNaN(userSelectedR)) {
-            errorSetter("Please, select R value");
+            errorSetter("Please, select a correct R");
         } else {
             const x = convertXToRadiusOf(event.offsetX, userSelectedR);
             const y = convertYToRadiusOf(event.offsetY, userSelectedR);

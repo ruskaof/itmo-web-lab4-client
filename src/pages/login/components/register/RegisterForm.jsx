@@ -6,7 +6,6 @@ import {Alert, Snackbar} from "@mui/material";
 import {setRegisterFormError, setRegisterFormSuccessMessage} from "../../../../redux/attempts/actions.js";
 
 function RegisterForm({errorMessage, successMessage, setErrorMessage, setSuccessMessage}) {
-    console.log("rendering register form: ", errorMessage, successMessage)
     return (<div style={{
         width: '100%', height: '100%',
     }}>

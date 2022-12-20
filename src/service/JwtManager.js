@@ -73,8 +73,6 @@ export const JwtManager = {
             });
     },
     getCurrentAccessToken() {
-        console.log("JwtManager.getCurrentAccessToken()");
-        console.log(localStorage.getItem("access_token"));
         return localStorage.getItem("access_token");
     },
     userIsLoggedIn() {
@@ -83,7 +81,6 @@ export const JwtManager = {
     /**
      * Used to remove all tokens from the local storage and logout the user from the application
      */ logout() {
-        console.log("JwtManager.logout()");
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
         localStorage.removeItem("username");

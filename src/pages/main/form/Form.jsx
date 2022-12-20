@@ -6,7 +6,6 @@ import {connect} from "react-redux";
 import {Alert, Snackbar} from "@mui/material";
 
 function Form({formError, setFormError}) {
-    console.log("Form rerendered: " + formError);
     return (<div>
             <Fields/>
             <Buttons/>

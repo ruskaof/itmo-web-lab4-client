@@ -57,7 +57,6 @@ export const ApplicationService = {
                 url += `&processingTime=${searchParams.searchProcessingTime}`;
             }
         }
-        console.log(url);
         return fetch(url, {
             method: "GET",
             headers: {
@@ -99,10 +98,11 @@ export const ApplicationService = {
         }).then((response) => {
             if (response.status === 200) {
                 return true;
-            } else if (response.status === 409) {
+            } else if (response.status === 409 || response.status === 403) {
                 return false;
             } else {
                 console.log("Unexpected response status: " + response.status);
+                return false;
             }
         });
     },

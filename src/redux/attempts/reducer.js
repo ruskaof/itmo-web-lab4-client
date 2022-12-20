@@ -124,7 +124,6 @@ export const reducer = (state = initialState, action) => {
                 ...state, currentEnteredR: action.payload,
             }
         case SET_FORM_ERROR:
-            console.log("SET_FORM_ERROR: " + action.payload)
             return {
                 ...state, formErrorMessage: action.payload,
             }
