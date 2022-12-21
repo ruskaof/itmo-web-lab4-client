@@ -4,15 +4,16 @@ import {connect} from "react-redux";
 import VirtualizedGridV2 from "./VirtualizedGridV2.jsx";
 import {Button} from "@mui/material";
 import {ApplicationService} from "../../../service/ApplicationService.js";
+import {setNextTablePageIsLoading} from "../../../redux/attempts/actions.js";
 
 const tableWidth = 1000;
 const pageSize = 25;
 
 
-export default function Table({}) {
+function Table({tableNextPageIsLoading, setTableNextPageLoading}) {
     const [attempts, setAttempts] = React.useState([]);
     const [hasMore, setHasMore] = React.useState(true);
-    const [isNextPageLoading, setNextPageLoading] = React.useState(false);
+    //const [isNextPageLoading, setNextPageLoading] = React.useState(false);
 
     const urlParams = new URLSearchParams(window.location.search);
 
@@ -41,19 +42,19 @@ export default function Table({}) {
 
 
     function loadNextPage() {
-        setNextPageLoading(true);
+        setTableNextPageLoading(true);
         return ApplicationService.getAttemptsWithOffset(attempts.length, pageSize, currentSearchParams)
             .then(response => response.json())
             .then(data => {
                 setAttempts(attempts.concat(data.attempts));
                 setHasMore(data.has_more);
-                setNextPageLoading(false);
+                setTableNextPageLoading(false);
             })
     }
 
 
     function onSearchClick() {
-        setNextPageLoading(false);
+        setTableNextPageLoading(false);
         setHasMore(true);
         setCurrentSearchParams({
             searchId: searchId,
@@ -105,9 +106,22 @@ export default function Table({}) {
 
         <VirtualizedGridV2 width={tableWidth} attempts={attempts} hasMore={hasMore} setHasMore={setHasMore}
                            loadNextPage={loadNextPage} setAttempts={setAttempts}
-                           isNextPageLoading={isNextPageLoading} setNextPageLoading={setNextPageLoading}
+                           isNextPageLoading={tableNextPageIsLoading} setNextPageLoading={setTableNextPageLoading}
                            infiniteLoaderRef={infiniteLoaderRef}/>
     </div>)
 }
 
+function mapStateToProps(state) {
+    return {
+        tableNextPageIsLoading: state.tableNextPageIsLoading,
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        setTableNextPageLoading: (isLoading) => dispatch(setNextTablePageIsLoading(isLoading)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Table)
 

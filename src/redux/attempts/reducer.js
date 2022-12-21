@@ -62,7 +62,7 @@ const initialState = {
     registerFormSuccessMessage: '',
     loggedIn: JwtManager.userIsLoggedIn(), // Initial value is set due to the data in the local storage
     authFormIsLoading: false,
-
+    tableNextPageIsLoading: false,
 }
 
 export const reducer = (state = initialState, action) => {
@@ -222,14 +222,7 @@ export const reducer = (state = initialState, action) => {
                 ...state, tableNextPageIsLoading: action.payload,
             }
         }
-        case MAKE_TABLE_SEARCH: {
-            return {
-                ...state,
-                tableNextPageIsLoading: false,
-                tableHasMore: true,
-                tableAttemptsList: [],
-            }
-        }
+
 
 
         default:
