@@ -26,20 +26,13 @@ import {
     FETCH_REGISTER_REQUEST,
     FETCH_REGISTER_SUCCESS,
     FETCH_REGISTER_FAILURE,
-    SET_TABLE_SEARCH_ID,
-    SET_TABLE_SEARCH_X,
-    SET_TABLE_SEARCH_Y,
-    SET_TABLE_SEARCH_R,
-    SET_TABLE_SEARCH_RESULT,
-    SET_TABLE_SEARCH_TIME,
-    SET_TABLE_SEARCH_PROCESSING_TIME,
     SET_TABLE_ATTEMPTS_LIST,
     SET_TABLE_HAS_MORE,
     SET_LOGGINED_IN,
     SET_REGISTER_FORM_ERROR,
     SET_LOGIN_FORM_ERROR,
     SET_REGISTER_FORM_SUCCESS_MESSAGE,
-    CLEAR_TABLE_CACHE, SET_NEXT_TABLE_PAGE_IS_LOADING, MAKE_TABLE_SEARCH,
+    CLEAR_TABLE_CACHE, SET_NEXT_TABLE_PAGE_IS_LOADING,
 } from "./actions.js";
 import {JwtManager} from "../../service/JwtManager.js";
 
@@ -63,6 +56,7 @@ const initialState = {
     loggedIn: JwtManager.userIsLoggedIn(), // Initial value is set due to the data in the local storage
     authFormIsLoading: false,
     tableNextPageIsLoading: false,
+    tableHasMore: true,
 }
 
 export const reducer = (state = initialState, action) => {

@@ -4,16 +4,15 @@ import {connect} from "react-redux";
 import VirtualizedGridV2 from "./VirtualizedGridV2.jsx";
 import {Button} from "@mui/material";
 import {ApplicationService} from "../../../service/ApplicationService.js";
-import {setNextTablePageIsLoading} from "../../../redux/attempts/actions.js";
+import {setNextTablePageIsLoading, setTableHasMore} from "../../../redux/attempts/actions.js";
 
 const tableWidth = 1000;
 const pageSize = 25;
 
 
-function Table({tableNextPageIsLoading, setTableNextPageLoading}) {
+function Table({tableNextPageIsLoading, setTableNextPageLoading, hasMore, setHasMore}) {
     const [attempts, setAttempts] = React.useState([]);
-    const [hasMore, setHasMore] = React.useState(true);
-    //const [isNextPageLoading, setNextPageLoading] = React.useState(false);
+
 
     const urlParams = new URLSearchParams(window.location.search);
 
@@ -114,12 +113,14 @@ function Table({tableNextPageIsLoading, setTableNextPageLoading}) {
 function mapStateToProps(state) {
     return {
         tableNextPageIsLoading: state.tableNextPageIsLoading,
+        hasMore: state.tableHasMore,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         setTableNextPageLoading: (isLoading) => dispatch(setNextTablePageIsLoading(isLoading)),
+        setHasMore: (hasMore) => dispatch(setTableHasMore(hasMore)),
     }
 }
 
