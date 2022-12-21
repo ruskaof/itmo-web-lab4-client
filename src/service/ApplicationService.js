@@ -32,7 +32,6 @@ export const ApplicationService = {
     },
     getAttemptsWithOffset: async function (offset, count, searchParams) {
         // Add search params only if they are not undefined
-        await sleep(1000);
         let url = `${BASE_URL}/get_with_offset?offset=${offset}&size=${count}`;
         if (searchParams !== undefined) {
             if (searchParams.searchId) {
@@ -98,7 +97,7 @@ export const ApplicationService = {
         }).then((response) => {
             if (response.status === 200) {
                 return true;
-            } else if (response.status === 409 || response.status === 403) {
+            } else if (response.status === 409 || response.status === 403 || response.status === 400) {
                 return false;
             } else {
                 console.log("Unexpected response status: " + response.status);
@@ -132,9 +131,4 @@ function refreshHandler(response, func) {
     } else {
         return response;
     }
-}
-
-// I need it to simulate a delay in the response from the server
-function sleep(time) {
-    return new Promise((resolve) => setTimeout(resolve, time));
 }

@@ -14,19 +14,21 @@ function Graph(props) {
     useEffect(() => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
-        drawCanvasGraph(canvas, ctx, props.attempts, props.r, props.addAttempt, props.setFormError);
+        drawCanvasGraph(canvas, ctx, props.attempts, props.r, props.addAttempt, props.setFormError, !props.nextTablePageIsLoading);
     });
 
     useEffect(() => {
         fetchAttemptsWithOffset(-10, 10, fieldData);
     }, [fieldData]);
 
-    return (<div className="gradient-animation-box">
+    return (<div className="gradient-animation-box"
+    >
         <canvas id="graph"
                 width="340"
                 height="340"
                 ref={canvasRef}
                 className="gradient-animation-box__graph"
+
         />
     </div>)
 }
@@ -40,8 +42,9 @@ function Graph(props) {
  * @param userSelectedR
  * @param addAttempt
  * @param errorSetter
+ * @param isEnabledToClick
  */
-function drawCanvasGraph(canvas, ctx, dotsList, userSelectedR, addAttempt, errorSetter) {
+function drawCanvasGraph(canvas, ctx, dotsList, userSelectedR, addAttempt, errorSetter, isEnabledToClick) {
     /* Init graph parameters */
     const markLen = 20
     const arrowDifference = 20
@@ -233,14 +236,17 @@ function drawCanvasGraph(canvas, ctx, dotsList, userSelectedR, addAttempt, error
     }
 
     canvas.onmousedown = function (event) {
+        if (isEnabledToClick) {
+            if (userSelectedR <= 0 || isNaN(userSelectedR)) {
+                errorSetter("Please, select a correct R");
+            } else {
+                const x = convertXToRadiusOf(event.offsetX, userSelectedR);
+                const y = convertYToRadiusOf(event.offsetY, userSelectedR);
 
-        if (userSelectedR <= 0 || isNaN(userSelectedR)) {
-            errorSetter("Please, select a correct R");
+                addAttempt({x: x, y: y, r: userSelectedR});
+            }
         } else {
-            const x = convertXToRadiusOf(event.offsetX, userSelectedR);
-            const y = convertYToRadiusOf(event.offsetY, userSelectedR);
-
-            addAttempt({x: x, y: y, r: userSelectedR});
+            errorSetter("Please wait until the table loads fully")
         }
     };
 }
@@ -263,6 +269,7 @@ function mapStateToGraphProps(state) {
         tableSearchTime: state.tableSearchTime,
         tableSearchResult: state.tableSearchResult,
         tableSearchProcessingTime: state.tableSearchProcessingTime,
+        nextTablePageIsLoading: state.tableNextPageIsLoading
     }
 }
 

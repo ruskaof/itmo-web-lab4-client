@@ -35,7 +35,11 @@ import {
     SET_TABLE_SEARCH_PROCESSING_TIME,
     SET_TABLE_ATTEMPTS_LIST,
     SET_TABLE_HAS_MORE,
-    SET_LOGGINED_IN, SET_REGISTER_FORM_ERROR, SET_LOGIN_FORM_ERROR, SET_REGISTER_FORM_SUCCESS_MESSAGE,
+    SET_LOGGINED_IN,
+    SET_REGISTER_FORM_ERROR,
+    SET_LOGIN_FORM_ERROR,
+    SET_REGISTER_FORM_SUCCESS_MESSAGE,
+    CLEAR_TABLE_CACHE, SET_NEXT_TABLE_PAGE_IS_LOADING,
 } from "./actions.js";
 import {JwtManager} from "../../service/JwtManager.js";
 
@@ -58,15 +62,9 @@ const initialState = {
     registerFormSuccessMessage: '',
     loggedIn: JwtManager.userIsLoggedIn(), // Initial value is set due to the data in the local storage
     authFormIsLoading: false,
-    tableSearchId: '',
-    tableSearchX: '',
-    tableSearchY: '',
-    tableSearchR: '',
-    tableSearchResult: '',
-    tableSearchTime: '',
-    tableSearchProcessingTime: '',
     tableAttemptsList: [],
     tableHasMore: true,
+    tableNextPageIsLoading: false,
 }
 
 export const reducer = (state = initialState, action) => {
@@ -189,34 +187,6 @@ export const reducer = (state = initialState, action) => {
                 registerFormErrorMessage: action.payload,
                 registerFormSuccessMessage: ''
             }
-        case SET_TABLE_SEARCH_ID:
-            return {
-                ...state, tableSearchId: action.payload, tableAttemptsList: [],
-            }
-        case SET_TABLE_SEARCH_X:
-            return {
-                ...state, tableSearchX: action.payload, tableAttemptsList: [],
-            }
-        case SET_TABLE_SEARCH_Y:
-            return {
-                ...state, tableSearchY: action.payload, tableAttemptsList: [],
-            }
-        case SET_TABLE_SEARCH_R:
-            return {
-                ...state, tableSearchR: action.payload, tableAttemptsList: [],
-            }
-        case SET_TABLE_SEARCH_RESULT:
-            return {
-                ...state, tableSearchResult: action.payload, tableAttemptsList: [],
-            }
-        case SET_TABLE_SEARCH_TIME:
-            return {
-                ...state, tableSearchTime: action.payload, tableAttemptsList: [],
-            }
-        case SET_TABLE_SEARCH_PROCESSING_TIME:
-            return {
-                ...state, tableSearchProcessingTime: action.payload, tableAttemptsList: [],
-            }
         case SET_TABLE_ATTEMPTS_LIST:
             return {
                 ...state, tableAttemptsList: action.payload,
@@ -242,6 +212,16 @@ export const reducer = (state = initialState, action) => {
         case SET_REGISTER_FORM_SUCCESS_MESSAGE: {
             return {
                 ...state, registerFormSuccessMessage: action.payload,
+            }
+        }
+        case CLEAR_TABLE_CACHE: {
+            return {
+                ...state, tableAttemptsList: [],
+            }
+        }
+        case SET_NEXT_TABLE_PAGE_IS_LOADING: {
+            return {
+                ...state, tableNextPageIsLoading: action.payload,
             }
         }
 

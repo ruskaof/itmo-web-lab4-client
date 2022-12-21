@@ -2,13 +2,15 @@ import React from "react";
 import {Box, Button} from "@mui/material";
 import {connect} from "react-redux";
 import {fetchAddAttempt, fetchDeleteAllAttempts, setFormError} from "../../../redux/attempts/actions.js";
+
 export function Buttons({
                             currentEnteredX,
                             currentEnteredY,
                             currentEnteredR,
                             fetchAddAttempt,
                             fetchDeleteAllAttempts,
-                            setFormError
+                            setFormError,
+                            nextTablePageIsLoading
                         }) {
     return (<Box sx={{
         display: 'flex',
@@ -20,10 +22,12 @@ export function Buttons({
     }}>
         <Button variant="outlined" onClick={() => {
             addAttemptIfValid(fetchAddAttempt, currentEnteredX, currentEnteredY, currentEnteredR, setFormError)
-        }}>
+        }}
+                disabled={nextTablePageIsLoading}>
             Submit
         </Button>
-        <Button variant="outlined" onClick={fetchDeleteAllAttempts}>Reset</Button>
+        <Button variant="outlined" onClick={fetchDeleteAllAttempts}
+                disabled={nextTablePageIsLoading}>Reset</Button>
     </Box>)
 }
 
@@ -42,6 +46,7 @@ function mapButtonStateToFormProps(state) {
         currentEnteredX: state.currentEnteredX,
         currentEnteredY: state.currentEnteredY,
         currentEnteredR: state.currentEnteredR,
+        nextTablePageIsLoading: state.tableNextPageIsLoading
     }
 }
 

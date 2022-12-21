@@ -303,42 +303,6 @@ const fetchRegisterFailure = errorMessage => {
     }
 }
 
-export const SET_TABLE_SEARCH_ID = 'SET_TABLE_SEARCH_ID';
-export const SET_TABLE_SEARCH_X = 'SET_TABLE_SEARCH_X';
-export const SET_TABLE_SEARCH_Y = 'SET_TABLE_SEARCH_Y';
-export const SET_TABLE_SEARCH_R = 'SET_TABLE_SEARCH_R';
-export const SET_TABLE_SEARCH_RESULT = 'SET_TABLE_SEARCH_RESULT';
-export const SET_TABLE_SEARCH_TIME = 'SET_TABLE_SEARCH_TIME';
-export const SET_TABLE_SEARCH_PROCESSING_TIME = 'SET_TABLE_SEARCH_PROCESSING_TIME';
-
-export const setTableSearchId = (id) => ({
-    type: SET_TABLE_SEARCH_ID, payload: id,
-})
-
-export const setTableSearchX = (x) => ({
-    type: SET_TABLE_SEARCH_X, payload: x,
-})
-
-export const setTableSearchY = (y) => ({
-    type: SET_TABLE_SEARCH_Y, payload: y,
-})
-
-export const setTableSearchR = (r) => ({
-    type: SET_TABLE_SEARCH_R, payload: r,
-})
-
-export const setTableSearchResult = (result) => ({
-    type: SET_TABLE_SEARCH_RESULT, payload: result,
-})
-
-export const setTableSearchTime = (time) => ({
-    type: SET_TABLE_SEARCH_TIME, payload: time,
-})
-
-export const setTableSearchProcessingTime = (processingTime) => ({
-    type: SET_TABLE_SEARCH_PROCESSING_TIME, payload: processingTime,
-})
-
 export const FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_REQUEST = 'FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_REQUEST';
 export const FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_SUCCESS = 'FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_SUCCESS';
 export const FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_FAILURE = 'FETCH_ATTEMPTS_WITH_OFFSET_SEARCH_FAILURE';
@@ -411,5 +375,33 @@ export const SET_REGISTER_FORM_SUCCESS_MESSAGE = 'SET_REGISTER_FORM_SUCCESS_MESS
 export const setRegisterFormSuccessMessage = (successMessage) => {
     return {
         type: SET_REGISTER_FORM_SUCCESS_MESSAGE, payload: successMessage,
+    }
+}
+
+export const CLEAR_TABLE_CACHE = 'CLEAR_TABLE_CACHE';
+
+export const clearTableCache = () => {
+    return {
+        type: CLEAR_TABLE_CACHE,
+    }
+}
+
+/**
+ * Why did I move this state to redux?
+ * The thing is, the table can be updated from graph or the form during it's loading.
+ * When the table is loading, we do not want to update it's state, because it will cause
+ * the table to show irrelevant data. So, we store the data in redux, and when the table
+ * is loading we prevent the user from updating the table.
+ *
+ * This approach is only works for one user experience.
+ *
+ * OC comment (by ruskaof)
+ * @type {string}
+ */
+export const SET_NEXT_TABLE_PAGE_IS_LOADING = 'SET_NEXT_TABLE_PAGE_IS_LOADING';
+
+export const setNextTablePageIsLoading = (isLoading) => {
+    return {
+        type: SET_NEXT_TABLE_PAGE_IS_LOADING, payload: isLoading,
     }
 }
