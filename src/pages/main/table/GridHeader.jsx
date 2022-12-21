@@ -1,50 +1,48 @@
 import React from 'react';
 import {TextField} from "@mui/material";
-import {setGetParam} from "../../../utility/UrlState.js";
-import {NumberParam, StringParam, useQueryParam} from "use-query-params";
-import {clearTableCache} from "../../../redux/attempts/actions.js";
-import {connect} from "react-redux";
 
-function GridHeader({
-                        width, clearTableCache,
+export default function GridHeader({
+                        width,
+                        searchId,
+                        searchX,
+                        searchY,
+                        searchR,
+                        searchResult,
+                        searchTime,
+                        searchProcessingTime,
+                        setSearchId,
+                        setSearchX,
+                        setSearchY,
+                        setSearchR,
+                        setSearchResult,
+                        setSearchTime,
+                        setSearchProcessingTime,
+
                     }) {
-    const [searchId, setSearchId] = useQueryParam("id", StringParam);
-    const [searchX, setSearchX] = useQueryParam("x", StringParam);
-    const [searchY, setSearchY] = useQueryParam("y", StringParam);
-    const [searchR, setSearchR] = useQueryParam("r", StringParam);
-    const [searchResult, setSearchResult] = useQueryParam("result", StringParam);
-    const [searchTime, setSearchTIme] = useQueryParam("time", StringParam);
-    const [searchProcessingTime, setSearchProcessingTime] = useQueryParam("processingTime", StringParam);
+
 
     function handleChange(e) {
         switch (e.target.name) {
             case "id":
                 setSearchId(e.target.value);
-                clearTableCache();
                 break;
             case "x":
                 setSearchX(e.target.value);
-                clearTableCache();
                 break;
             case "y":
                 setSearchY(e.target.value);
-                clearTableCache();
                 break;
             case "r":
                 setSearchR(e.target.value);
-                clearTableCache();
                 break;
             case "result":
                 setSearchResult(e.target.value);
-                clearTableCache();
                 break;
             case "time":
-                setSearchTIme(e.target.value);
-                clearTableCache();
+                setSearchTime(e.target.value);
                 break;
             case "processTime":
                 setSearchProcessingTime(e.target.value);
-                clearTableCache();
                 break;
             default:
                 break;
@@ -108,10 +106,3 @@ function GridHeader({
     </div>);
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        clearTableCache: () => dispatch(clearTableCache()),
-    }
-}
-
-export default connect(null, mapDispatchToProps)(GridHeader);

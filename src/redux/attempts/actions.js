@@ -405,3 +405,11 @@ export const setNextTablePageIsLoading = (isLoading) => {
         type: SET_NEXT_TABLE_PAGE_IS_LOADING, payload: isLoading,
     }
 }
+
+export const MAKE_TABLE_SEARCH = "MAKE_TABLE_SEARCH"
+
+export const makeTableSearch = (resetloadMoreItemsCache, searchParams) => {
+    return {
+        type: MAKE_TABLE_SEARCH, payload: {resetloadMoreItemsCache, searchParams},
+    }
+}

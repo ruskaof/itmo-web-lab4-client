@@ -1,31 +1,16 @@
-import React, {useRef} from "react";
+import React from "react";
 import InfiniteLoader from "react-window-infinite-loader";
 import {FixedSizeList} from "react-window";
-import {useEffect} from "react";
-import {ApplicationService} from "../../../service/ApplicationService.js";
-import {connect} from "react-redux";
-import {setNextTablePageIsLoading, setTableAttemptsList, setTableHasMore} from "../../../redux/attempts/actions.js";
 import {Box, LinearProgress} from "@mui/material";
-import {NumberParam, StringParam, useQueryParam} from "use-query-params";
 
-const pageSize = 25;
 
-function VirtualizedGridV2(props) {
+export default function VirtualizedGridV2(props) {
     const {
-        hasMore, setHasMore, setAttempts, attempts, width, setNextPageLoading, isNextPageLoading
+        width, attempts, hasMore,
+        setHasMore, loadNextPage, setAttempts,
+        isNextPageLoading, setNextPageLoading,
+        infiniteLoaderRef
     } = props;
-
-    const [searchId] = useQueryParam("id", StringParam);
-    const [searchX] = useQueryParam("x", NumberParam);
-    const [searchY] = useQueryParam("y", NumberParam);
-    const [searchR] = useQueryParam("r", NumberParam);
-    const [searchResult] = useQueryParam("result", StringParam);
-    const [searchTime] = useQueryParam("time", StringParam);
-    const [searchProcessingTime] = useQueryParam("processingTime", NumberParam);
-
-    const infiniteLoaderRef = useRef(null);
-    const hasMountedRef = useRef(false);
-
 
     const itemCount = hasMore ? attempts.length + 1 : attempts.length;
 
@@ -35,33 +20,6 @@ function VirtualizedGridV2(props) {
     const isItemLoaded = (index) => {
         return !hasMore || index < attempts.length;
     }
-
-    function loadNextPage() {
-        setNextPageLoading(true);
-        return ApplicationService.getAttemptsWithOffset(attempts.length, pageSize, {
-            searchId, searchX, searchY, searchR, searchResult, searchTime, searchProcessingTime
-        })
-            .then(response => response.json())
-            .then(data => {
-                setAttempts(attempts.concat(data.attempts));
-                setHasMore(data.has_more);
-                setNextPageLoading(false);
-            })
-    }
-
-    useEffect(() => {
-        setNextPageLoading(false);
-        setHasMore(true);
-        if (hasMountedRef.current) {
-            if (infiniteLoaderRef.current) {
-
-                infiniteLoaderRef.current.resetloadMoreItemsCache(false);
-                loadNextPage()
-            }
-        }
-        hasMountedRef.current = true;
-
-    }, [searchId, searchX, searchY, searchR, searchResult, searchTime, searchProcessingTime])
 
     const Item = ({index, style}) => {
         if (!isItemLoaded(index)) {
@@ -118,21 +76,3 @@ function VirtualizedGridV2(props) {
         </FixedSizeList>)}
     </InfiniteLoader>);
 }
-
-function mapStateToTableProps(state) {
-    return {
-        hasMore: state.tableHasMore,
-        attempts: state.tableAttemptsList,
-        isNextPageLoading: state.tableNextPageIsLoading
-    }
-}
-
-function mapDispatchToTableProps(dispatch) {
-    return {
-        setHasMore: (hasMore) => dispatch(setTableHasMore(hasMore)),
-        setAttempts: (attempts) => dispatch(setTableAttemptsList(attempts)),
-        setNextPageLoading: (loading) => dispatch(setNextTablePageIsLoading(loading))
-    }
-}
-
-export default connect(mapStateToTableProps, mapDispatchToTableProps)(VirtualizedGridV2);

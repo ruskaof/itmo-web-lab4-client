@@ -39,7 +39,7 @@ import {
     SET_REGISTER_FORM_ERROR,
     SET_LOGIN_FORM_ERROR,
     SET_REGISTER_FORM_SUCCESS_MESSAGE,
-    CLEAR_TABLE_CACHE, SET_NEXT_TABLE_PAGE_IS_LOADING,
+    CLEAR_TABLE_CACHE, SET_NEXT_TABLE_PAGE_IS_LOADING, MAKE_TABLE_SEARCH,
 } from "./actions.js";
 import {JwtManager} from "../../service/JwtManager.js";
 
@@ -62,9 +62,7 @@ const initialState = {
     registerFormSuccessMessage: '',
     loggedIn: JwtManager.userIsLoggedIn(), // Initial value is set due to the data in the local storage
     authFormIsLoading: false,
-    tableAttemptsList: [],
-    tableHasMore: true,
-    tableNextPageIsLoading: false,
+
 }
 
 export const reducer = (state = initialState, action) => {
@@ -222,6 +220,14 @@ export const reducer = (state = initialState, action) => {
         case SET_NEXT_TABLE_PAGE_IS_LOADING: {
             return {
                 ...state, tableNextPageIsLoading: action.payload,
+            }
+        }
+        case MAKE_TABLE_SEARCH: {
+            return {
+                ...state,
+                tableNextPageIsLoading: false,
+                tableHasMore: true,
+                tableAttemptsList: [],
             }
         }
 
